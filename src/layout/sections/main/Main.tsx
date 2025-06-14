@@ -139,14 +139,15 @@ const MainButton = styled.button`
 
 // Мобильные стили
 const SMainMobile = styled.section`
-  display: none;
-  background: white;
-  padding: 20px;
-  min-height: 100vh;
-  
-  @media ${theme.media.tablet} {
-    display: block;
-  }
+    display: none;
+    background: ${theme.colors.secondaryAccent};
+    padding: 20px;
+    min-height: 65vh;
+
+
+    @media ${theme.media.tablet} {
+        display: block;
+    }
 `;
 
 const MobileContent = styled.div`
@@ -155,13 +156,17 @@ const MobileContent = styled.div`
   align-items: center;
   gap: 30px;
   padding: 20px 0;
+
 `;
 
 const MobileImage = styled.img`
-  width: 100%;
-  max-width: 300px;
-  height: auto;
-  object-fit: contain;
+    width: 90%;
+    max-width: 300px;
+    height: auto;
+    object-fit: contain;
+    margin-top: 5vh;
+    
+    
 `;
 
 const MobileTextWrap = styled.div`
@@ -176,22 +181,26 @@ const MobileLargeText = styled.h2`
   font-size: 24px;
   font-weight: 500;
   line-height: 1.3;
+    color: white;
 `;
 
 const MobileSmallText = styled.p`
   font-size: 16px;
   font-weight: 500;
+    color: white;
 `;
 
 const MobileButton = styled.button`
-  background: ${theme.colors.font};
-  color: white;
+  background: white;
+  color: ${theme.colors.font};
   padding: 12px 30px;
-  border-radius: 22px;
+  border-radius: 5vw;
   font-size: 16px;
   font-weight: 500;
   margin-top: 20px;
   transition: all 0.3s ease;
+    width: 75vw;
+    height: 6vh;
   
   &:hover {
     background: ${theme.colors.accent};
