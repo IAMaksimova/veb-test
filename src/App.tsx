@@ -2,9 +2,9 @@ import './App.css'
 import {Header} from "./layout/header/Header.tsx";
 import {Main} from "./layout/sections/main/Main.tsx";
 // import {Challenge} from "./layout/sections/challenge/Challenge.tsx";
-import {Directions} from "./layout/sections/directions/Directions.tsx";
-import {Conditions} from "./layout/sections/conditions/Conditions.tsx";
-import {Challenge} from "./layout/sections/challenge/Challenge.tsx";
+// import {Directions} from "./layout/sections/directions/Directions.tsx";
+// import {Conditions} from "./layout/sections/conditions/Conditions.tsx";
+// import {Challenge} from "./layout/sections/challenge/Challenge.tsx";
 // import {Feedback} from "./layout/sections/feedback/Feedback.tsx";
 // import {Application} from "./layout/sections/application/Application.tsx";
 // import {Partners} from "./layout/sections/partners/Partners.tsx";
@@ -30,9 +30,9 @@ function App() {
         <>
             <Header scrollToSection={scrollToSection}/>
             <Main scrollToSection={scrollToSection}/>
-            <Challenge/>
-            <Directions scrollToSection={scrollToSection}/>
-            <Conditions/>
+            {/*<Challenge/>*/}
+            {/*<Directions scrollToSection={scrollToSection}/>*/}
+            {/*<Conditions/>*/}
             {/*<Feedback/>*/}
             {/*<Application/>*/}
             {/*<Partners/>*/}
