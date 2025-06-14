@@ -1,49 +1,19 @@
 import styled, {keyframes} from "styled-components";
-import { theme } from "../../../styles/Theme.ts";
-import { Container } from "../../../components/Container.ts";
-import { FlexWrapper } from "../../../components/FlexWrapper.ts";
+import {theme} from "../../../styles/Theme.ts";
+import {Container} from "../../../components/Container.ts";
+import {FlexWrapper} from "../../../components/FlexWrapper.ts";
 import {useState} from "react";
-import type {ScrollToSec} from "../../../App.tsx";
+import type {IsMobile, ScrollToSec} from "../../../App.tsx";
+import {type Direction, directions} from "./Diresctions_Data.ts";
 
-interface Direction {
-    [key: string]: any;
-    description: string;
-    requirements: string[];
-}
 
-const directions: Direction[] = [
-    { 'Бизнес. Партнерство. Развитие': 1, description: 'структурирование сделок, сопровождение ключевых клиентов, сопровождение сделок, субсидии, направление подготовки управленческой аналитики по кредитному портфелю для руководства', requirements: ['базовое понимание составления и анализа финансовой отчетности компаний', 'Знание основ корпоративных финансов и финансового моделирования и рассчетов финансовых коэффициентов', 'Уверенный пользователь MS Excel'] },
-    { 'Финансовый бизнес ВЭБа': 1, description: 'Описание Блока финансов...', requirements: ['Требование 3', 'Требование 4'] },
-    { 'Блок управления рисками': 1, description: 'Описание Блока управления рисками...', requirements: ['Требование 5', 'Требование 6'] },
-    { 'Активы ВЭБа: новые решения': 1, description: 'Описание Блока по работе с активами...', requirements: ['Требование 7', 'Требование 8'] },
-    { 'Центр "Технологии. Процессы. Данные"': 1, description: 'Описание Блока IT...', requirements: ['Python', 'SQL', 'Bitbucket', 'Git', 'Hadoop', 'JSON', 'Openshift'] },
-    { 'Пульс ВЭБа': 1, description: 'Описание Блока коммуникаций...', requirements: ['Требование 9', 'Требование 10'] },
-    { 'Закон и право - опора бизнеса': 1, description: 'Описание Правового блока...', requirements: ['Требование 11', 'Требование 12'] },
-    { 'Люди - главное': 1, description: 'Описание Блока HR...', requirements: ['Требование 13', 'Требование 14'] },
-    { 'Блок стратегии': 1, description: 'Описание Блока стратегии...', requirements: ['Требование 15', 'Требование 16'] },
-    { 'Дом ВЭБа': 1, description: 'Описание Блока обеспечения...', requirements: ['Требование 17', 'Требование 18'] },
-    { 'Центр "Решения и документы"': 1, description: 'Описание Блока корпоративного управления...', requirements: ['Требование 19', 'Требование 20'] },
-    { 'Безграничные возможности': 1, description: 'Описание Международного блока...', requirements: ['Требование 21', 'Требование 22'] },
-    { 'Служба комплаенса': 1, description: 'Описание Службы комплаенса...', requirements: ['Требование 23', 'Требование 24'] },
-    { 'Офис ВЭБ.РФ': 1, description: 'Описание Аппарата Председателя...', requirements: ['Требование 25', 'Требование 26'] }
-];
-
-export const Directions:React.FC<ScrollToSec> = ({scrollToSection}) => {
+export const Directions: React.FC<ScrollToSec & IsMobile> = ({scrollToSection, isMobile}) => {
     const [selectedDirection, setSelectedDirection] = useState<Direction | null>(null);
-
     const [isClosing, setIsClosing] = useState(false);
-
-    const sortedDirections = [...directions].sort((a, b) => {
-        const aIsOpen = Object.values(a)[0];
-        const bIsOpen = Object.values(b)[0];
-
-        return bIsOpen - aIsOpen;
-    });
 
     const handleDirectionClick = (direction: Direction) => {
         setSelectedDirection(direction);
     };
-
 
     const handleCloseModal = () => {
         setIsClosing(true);
@@ -67,63 +37,67 @@ export const Directions:React.FC<ScrollToSec> = ({scrollToSection}) => {
 
     return (
 
-            <SDirectons id={'directions'}>
-                <Container>
-                    <FlexWrapper wrap={'wrap'} direction={'column'} align={'flex-start'}>
-                        <DirectionsHeader>
-                            <DirectionsTitle>Навигатор подразделений</DirectionsTitle>
-                            <DirectionsSubtitle>Набор открыт в следующих подразделениях:</DirectionsSubtitle>
-                        </DirectionsHeader>
+        <SDirectons id={'directions'}>
+            <Container>
+                <FlexWrapper wrap={'wrap'} direction={'column'} align={'flex-start'}>
+                    <DirectionsHeader>
+                        <DirectionsTitle>Навигатор подразделений</DirectionsTitle>
+                        <DirectionsSubtitle>Набор открыт в следующих подразделениях:</DirectionsSubtitle>
+                    </DirectionsHeader>
 
-                        <FlexWrapper wrap={'wrap'} justify={'center'} gap={'20px'} style={{width: '90vw'}}>
-                            {sortedDirections.map((direction, index) => {
-                                const name = Object.keys(direction)[0];
-                                const isOpen = Object.values(direction)[0] === 1;
-
-                                return (
-                                    <DirectionItem key={index} isOpen={isOpen} onClick={() => handleDirectionClick(direction)}>
-                                        {name}
+                    <FlexWrapper wrap={'wrap'} justify={'center'} gap={'20px'} style={{width: '90vw'}}>
+                        {directions.map((direction) => {
+                            return (
+                                isMobile ?
+                                    <DirectionItemMobile key={direction.id} onClick={() => handleDirectionClick(direction)}>
+                                        {direction.name}
+                                    </DirectionItemMobile>
+                                    :
+                                    <DirectionItem key={direction.id} onClick={() => handleDirectionClick(direction)}>
+                                        {direction.name}
                                     </DirectionItem>
-                                );
-                            })}
-                        </FlexWrapper>
+
+
+                            );
+                        })}
                     </FlexWrapper>
-                </Container>
+                </FlexWrapper>
+            </Container>
 
-                {selectedDirection && (
-                    <ModalOverlay isClosing={isClosing}>
-                        <ModalContent>
-                            <CloseButton onClick={handleCloseModal}>&times;</CloseButton>
-                            <ModalHeader>{Object.keys(selectedDirection)[0]}</ModalHeader>
+            {selectedDirection && (
+                <ModalOverlay isClosing={isClosing}>
+                    <ModalContent>
+                        <CloseButton onClick={handleCloseModal}>&times;</CloseButton>
+                        <ModalHeader>{selectedDirection.name}</ModalHeader>
 
-                            <ContentGrid>
-                                <InfoBlock>
-                                    <h3>О подразделении:</h3>
-                                    <DescriptionBox>
-                                        {selectedDirection.description}
-                                    </DescriptionBox>
-                                </InfoBlock>
+                        <ContentGrid>
+                            <InfoBlock>
+                                <h3>О подразделении:</h3>
+                                <DescriptionBox>
+                                    {selectedDirection.description}
+                                </DescriptionBox>
+                            </InfoBlock>
 
-                                <InfoBlock>
-                                    <h3>Требования:</h3>
-                                    <RequirementsBox>
-                                        <StyledList>
-                                            {selectedDirection.requirements.map((requirement, index) => (
-                                                <li key={index}>
-                                                    <Marker />
-                                                    {requirement}
-                                                </li>
-                                            ))}
-                                        </StyledList>
-                                    </RequirementsBox>
-                                </InfoBlock>
-                            </ContentGrid>
+                            <InfoBlock>
+                                <h3>Требования:</h3>
+                                <RequirementsBox>
+                                    <StyledList>
+                                        {selectedDirection.requirements.map((requirement, index) => (
+                                            <li key={index}>
+                                                <Marker/>
+                                                {requirement}
+                                            </li>
+                                        ))}
+                                    </StyledList>
+                                </RequirementsBox>
+                            </InfoBlock>
+                        </ContentGrid>
 
-                            <ApplyButton onClick={handleGoToApplication}>Подать заявку</ApplyButton>
-                        </ModalContent>
-                    </ModalOverlay>
-                )}
-            </SDirectons>
+                        <ApplyButton onClick={handleGoToApplication}>Подать заявку</ApplyButton>
+                    </ModalContent>
+                </ModalOverlay>
+            )}
+        </SDirectons>
 
 
     );
@@ -146,11 +120,18 @@ const Marker = styled.span`
 `;
 
 const SDirectons = styled.section`
-    height: 70vh;
+    height: 80vh;
     background: ${theme.colors.font};
     width: 100%;
-    padding-top: 10vh;
     padding-left: 6vw;
+
+    @media ${theme.media.mobile}, ${theme.media.tablet} {
+        background: white;
+        padding-left: 0;
+        padding-top: 5vh;
+        height: 55vh;
+    }
+}
 `;
 
 const DirectionsHeader = styled.div`
@@ -159,6 +140,10 @@ const DirectionsHeader = styled.div`
     flex-direction: column;
     align-items: flex-start;
     margin-bottom: 8vh;
+
+    @media ${theme.media.mobile}, ${theme.media.tablet} {
+        margin-bottom: 3vh;
+    }
 `;
 
 const DirectionsTitle = styled.h2`
@@ -166,6 +151,12 @@ const DirectionsTitle = styled.h2`
     font-weight: 500;
     font-size: 5vh;
     text-align: left;
+    
+    @media ${theme.media.mobile}, ${theme.media.tablet}{
+        font-size: 2.8vh;
+        margin-bottom: 1vh;
+    }
+    
 `;
 
 const DirectionsSubtitle = styled.h3`
@@ -173,19 +164,45 @@ const DirectionsSubtitle = styled.h3`
     font-weight: 400;
     font-size: 3vh;
     text-align: left;
+
+    @media ${theme.media.mobile}, ${theme.media.tablet}{
+        color: ${theme.colors.fontDark};
+        font-size: 1.6vh;
+    }
 `;
 
-const DirectionItem = styled.div<{isOpen: boolean}>`
-    background-color: ${props => props.isOpen ? '#07CEB8' : 'rgba(193, 193, 193, 0.2)'};
+const DirectionItem = styled.div`
+    background-color: #07CEB8;
     color: ${theme.colors.font};
     border-radius: 50px;
     padding: 20px 30px;
     font-size: 20px;
-    cursor: ${props => props.isOpen ? 'pointer' : 'default'};
+    cursor: pointer;
     transition: background-color 0.3s ease;
 
     &:hover {
-        background-color: ${props => props.isOpen ? '#05a998' : 'rgba(193, 193, 193, 0.2)'};
+        background-color: #05a998;
+    }
+`;
+
+const DirectionItemMobile  = styled.div`
+    display: flex;
+    align-items: center;
+    padding: 10px 10px;
+    background: rgba(7, 206, 184, 0.1);
+    border-left: 3px solid #07CEB8;
+    transition: all 0.3s ease;
+
+
+    &:before {
+        content: "→";
+        color: #07CEB8;
+        margin-right: 12px;
+        font-size: 14px;
+    }
+
+    &:hover {
+        background: rgba(7, 206, 184, 0.2);
     }
 `;
 
@@ -206,6 +223,40 @@ const ModalOverlay = styled.div<{ isClosing: boolean }>`
 
 `
 
+const fadeIn = keyframes`
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+`;
+
+const fadeOut = keyframes`
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+`
+
+const ModalHeader = styled.h2`
+    font-size: 24px;
+    margin-bottom: 24px;
+    color: #2c3e50;
+    font-weight: 600;
+    
+    @media ${theme.media.tablet}{
+        width: 80%;
+        font-size: 16px;
+    }
+
+    @media ${theme.media.mobile}{
+        font-size: 14px;
+    }
+`;
+
 const ModalContent = styled.div`
     background-color: white;
     padding: 3vh;
@@ -214,139 +265,106 @@ const ModalContent = styled.div`
     height: 75vh;
     position: relative;
     display: flex;
-    flex-wrap: wrap;
     flex-direction: column;
-   
+    max-height: 90vh;
+    overflow-y: auto;
 
-`;
-
-// const CloseButton = styled.button`
-//     position: absolute;
-//     right: 2vw;
-//     background: none;
-//     font-size: 5vh;
-//     cursor: pointer;
-//     padding: 0;
-//     border: none;
-//     color: darkgray;   /* Default color is darkgray */
-//     transition: color 0.2s ease-in-out;
-//
-//     &:hover {
-//         color: black;   /* Hover color is black */
-//     }
-//
-//     &:focus {  /* Add this to improve a11y - for keyboard users. */
-//         outline: none; /* Remove default focus outline.  Replace it with your own styling. */
-//         color: black;    /* Focus color is black - same as hover. */
-//     }
-// `;
-
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-`;
-
-const fadeOut = keyframes`
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-`;
-
-// const Button = styled.button`
-//     background: ${theme.colors.font};
-//     width: 15vw;
-//     height: 7vh;
-//     font-weight: 500;
-//     color: white;
-//     border-radius: 2.5vh;
-//     font-size: 15px;
-//
-//     &:hover {
-//         background: #2b333e;
-//     }
-// `
-
-// const ModalContent = styled.div`
-//   position: relative;
-//   background: white;
-//   padding: 32px;
-//   border-radius: 12px;
-//   width: 700px;
-//   max-width: 90vw;
-//   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-// `;
-
-const ModalHeader = styled.h2`
-  font-size: 24px;
-  margin-bottom: 24px;
-  color: #2c3e50;
-  font-weight: 600;
+    @media ${theme.media.mobile} {
+        width: 90vw;
+        height: auto;
+        max-height: 85vh;
+        padding: 2vh;
+        border-radius: 2vh;
+    }
 `;
 
 const ContentGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  margin-bottom: 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 32px;
+
+    @media ${theme.media.mobile} {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
 `;
 
 const InfoBlock = styled.div`
-    
-  h3 {
-    font-size: 18px;
-    margin-bottom: 12px;
-    color: #2c3e50;
-    font-weight: 500;
-  }
+    h3 {
+        font-size: 18px;
+        margin-bottom: 12px;
+        color: #2c3e50;
+        font-weight: 500;
+
+        @media ${theme.media.mobile} {
+            font-size: 12px;
+        }
+    }
 `;
 
 const DescriptionBox = styled.div`
-  background: #f8f9fa;
-  padding: 16px;
-  border-radius: 8px;
-  min-height: 150px;
-  line-height: 1.5;
-  color: #495057;
+    background: #f8f9fa;
+    padding: 16px;
+    border-radius: 8px;
+    min-height: 150px;
+    line-height: 1.5;
+    color: #495057;
     height: 46vh;
+    overflow-y: auto;
+
+    @media ${theme.media.mobile} {
+        height: auto;
+        max-height: 30vh;
+        min-height: 100px;
+    }
 `;
 
 const RequirementsBox = styled.div`
-  background: #f8f9fa;
-  padding: 16px;
-  border-radius: 8px;
-  min-height: 150px;
+    background: #f8f9fa;
+    padding: 16px;
+    border-radius: 8px;
+    min-height: 150px;
     height: 46vh;
-  
-  ul {
-    padding-left: 20px;
-    margin: 0;
-  }
-  
-  li {
-    margin-bottom: 8px;
-    color: #495057;
-    line-height: 1.4;
-  }
+    overflow-y: auto;
+
+    @media ${theme.media.mobile} {
+        height: auto;
+        max-height: 30vh;
+        min-height: 100px;
+    }
+
+    ul {
+        padding-left: 20px;
+        margin: 0;
+    }
+
+    li {
+        margin-bottom: 8px;
+        color: #495057;
+        line-height: 1.4;
+    }
 `;
 
 const ApplyButton = styled.button`
     background: rgba(44, 62, 80, 0.76);
     color: white;
-    border-radius: 2vh;
+    border-radius: 1.7vh;
     font-size: 2vh;
     cursor: pointer;
     transition: background 0.2s;
     width: 30vw;
     height: 6vh;
     margin: 0 auto;
+    border: none;
 
+    @media ${theme.media.mobile} {
+        width: 85%;
+        height: 4.5vh;
+        font-size: 1.8vh;
+        margin-top: 16px;
+    }
 
     &:hover {
         background: #1a252f;
@@ -354,17 +372,22 @@ const ApplyButton = styled.button`
 `;
 
 const CloseButton = styled.button`
-  position: absolute;
-  top: 0;
-  right: 1vw;
-  background: none;
-  border: none;
-  font-size: 6vh;
-  cursor: pointer;
-  color: #6c757d;
-  padding: 4px;
-  
-  &:hover {
-    color: #2c3e50;
-  }
+    position: absolute;
+    top: 0;
+    right: 1vw;
+    background: none;
+    border: none;
+    font-size: 6vh;
+    cursor: pointer;
+    color: #6c757d;
+    padding: 4px;
+
+    @media ${theme.media.mobile} {
+        font-size: 4vh;
+        right: 2vw;
+    }
+
+    &:hover {
+        color: #2c3e50;
+    }
 `;
