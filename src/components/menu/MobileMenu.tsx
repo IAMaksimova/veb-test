@@ -40,10 +40,10 @@ export const MobileMenu: React.FC<{ menuItems: MenuItem[] } & ScrollToSec> = ({
 };
 
 // Анимации
-const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-`;
+// const fadeIn = keyframes`
+//   from { opacity: 0; transform: translateY(-20px); }
+//   to { opacity: 1; transform: translateY(0); }
+// `;
 
 const slideIn = keyframes`
   from { transform: translateX(100%); }
