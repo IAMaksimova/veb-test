@@ -1,7 +1,7 @@
 import './App.css'
 import {Header} from "./layout/header/Header.tsx";
 import {Main} from "./layout/sections/main/Main.tsx";
-// import {Challenge} from "./layout/sections/challenge/Challenge.tsx";
+import {Challenge} from "./layout/sections/challenge/Challenge.tsx";
 // import {Directions} from "./layout/sections/directions/Directions.tsx";
 // import {Conditions} from "./layout/sections/conditions/Conditions.tsx";
 // import {Challenge} from "./layout/sections/challenge/Challenge.tsx";
@@ -30,7 +30,7 @@ function App() {
         <>
             <Header scrollToSection={scrollToSection}/>
             <Main scrollToSection={scrollToSection}/>
-            {/*<Challenge/>*/}
+            <Challenge/>
             {/*<Directions scrollToSection={scrollToSection}/>*/}
             {/*<Conditions/>*/}
             {/*<Feedback/>*/}

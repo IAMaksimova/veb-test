@@ -35,16 +35,7 @@ const SDesktopMenu = styled.nav`
         &:hover {
             color: ${theme.colors.accent};
 
-            &::after {
-                content: '';
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                height: 2px;
-                background: ${theme.colors.accent};
-                animation: underline 0.3s ease forwards;
-            }
+           
         }
     }
 `
