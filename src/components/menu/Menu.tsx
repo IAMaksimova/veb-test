@@ -1,26 +1,31 @@
 import styled from "styled-components";
+import React from "react";
+import type {MenuItem} from "../../layout/header/Header.tsx";
+import type {ScrollToSec} from "../../App.tsx";
 
-export const Menu = () => {
+export const Menu : React.FC<{ menuItems: MenuItem[]} & ScrollToSec> = ({menuItems, scrollToSection}) => {
     return (
-        <SMenu>
             <ul>
-                <li><a>О практике</a></li>
-                <li><a>Условия</a></li>
-                <li><a>Направления</a></li>
-                <li><a>FAQ</a></li>
+                {menuItems.map((item, index) => {
+
+                    return (
+                        <ListItem key={index} onClick={() => scrollToSection(item.value)}>
+                            <Link>
+                                {item.label}
+                            </Link>
+                        </ListItem>
+                    )
+                })}
             </ul>
-        </SMenu>
     );
 };
 
-const SMenu = styled.nav`
-    //outline: 1px solid deeppink;
-    //margin-right: 7vw;
+const Link = styled.a`
+    text-align: center;
+`
 
-ul{
-    display: flex;
-    gap: 5vw;
-    font-size: 20px;
-    font-weight: 500;
-}
+export const ListItem = styled.li`
+    &:hover {
+        color: #45A19F;
+    }
 `
