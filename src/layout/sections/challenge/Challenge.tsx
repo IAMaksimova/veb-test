@@ -126,7 +126,7 @@ const TextWrapper = styled.div`
     }
 `;
 
-const SectionTitle = styled.h2`
+export const SectionTitle = styled.h2`
     color: #07CEB8;
     font-weight: 500;
     font-size: clamp(32px, 5vh, 48px);
