@@ -229,7 +229,7 @@ const ChallengeElement = styled.div<ElementSize & {accent?: boolean}>`
     align-items: flex-end;
     background: ${props => props.accent ? 'white' : 'transparent'};
     color: ${props => props.accent ? theme.colors.fontDark : 'white'};
-    font-size: clamp(12px, 5vh, 2vh);
+    font-size: clamp(20px, 5vh, 2vh);
     line-height: 1.3;
 
     &::before {

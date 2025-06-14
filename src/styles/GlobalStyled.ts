@@ -96,16 +96,5 @@ export const GlobalStyle = createGlobalStyle`
             outline: 2px solid ${theme.colors.accent};
         }
     }
-
-    // Вспомогательные классы
-    .visually-hidden {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        margin: -1px;
-        padding: 0;
-        overflow: hidden;
-        border: 0;
-        clip: rect(0 0 0 0);
-    }
+    
 `;
