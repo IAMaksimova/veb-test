@@ -33,7 +33,7 @@ const SMainMobile = styled.section`
     display: none;
     background: ${theme.colors.secondaryAccent};
     padding: 20px;
-    min-height: 65vh;
+    min-height: 100vh;
 
 
     @media ${theme.media.tablet} {

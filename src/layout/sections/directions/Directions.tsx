@@ -129,7 +129,6 @@ const SDirectons = styled.section`
         background: white;
         padding-left: 0;
         padding-top: 5vh;
-        height: 55vh;
     }
 }
 `;

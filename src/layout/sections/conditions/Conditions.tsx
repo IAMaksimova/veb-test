@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import { Container } from "../../../components/Container.ts";
 import { theme } from "../../../styles/Theme.ts";
-import { Users, Calendar, Home, Clock, Award } from 'react-feather';
+import {Users, Calendar, Home, Clock, Award, Flag} from 'react-feather';
 import React from "react";
 
 const conditions = [
     {
         title: "Для кого",
-        text: "Ждем студентов 3 и 4-го курса бакалавриата и студентов магистратуры, имеющих гражданство Российской Федерации",
+        text: "Студенты 3 и 4-го курса бакалавриата и студентов магистратуры",
         icon: <Users size={24} />,
         color: "#540D6E",
         decorType: 'triangle'
@@ -27,17 +27,24 @@ const conditions = [
         decorType: 'triangle'
     },
     {
-        title: "График работы",
-        text: "Гибкий график. Практике необходимо уделять от 20 часов в неделю",
+        title: "Гибкий график",
+        text: "Практике необходимо уделять от 20 часов в неделю",
         icon: <Clock size={24} />,
         color: "#07CEB8",
+        decorType: 'triangle'
+    },
+    {
+        title: "Гражданство",
+        text: "Только для граждан РФ",
+        icon: <Flag size={24} />,
+        color: "#540D6E",
         decorType: 'triangle'
     },
     {
         title: "Вознаграждение",
         text: "Практика является неоплачиваемой",
         icon: <Award size={24} />,
-        color: "#540D6E",
+        color: "#07CEB8",
         decorType: 'triangle'
     }
 ];
@@ -47,13 +54,13 @@ export const Conditions:React.FC = () => {
         <SConditions id={'conditions'}>
             <Container>
                 <TitleWrapper>
-                    <ConditionsTitle>Условия программы</ConditionsTitle>
+                    <ConditionsTitle>Особенности программы</ConditionsTitle>
                     <TitleUnderline />
                 </TitleWrapper>
 
                 <GridLayout>
                     {conditions.map((item, index) => (
-                        <ConditionCard key={index} $color={item.color}>
+                        <ConditionCard key={index} color={item.color} isFirstThree={index > 3}>
                             <IconWrapper $color={item.color}>
                                 {item.icon}
                             </IconWrapper>
@@ -98,28 +105,47 @@ const CornerDecoration = styled.div<{ $color: string }>`
   border-color: transparent transparent ${props => props.$color}15 transparent;
 `;
 
-// Стилизованные компоненты
 const SConditions = styled.section`
     padding: 80px 0;
     position: relative;
     background-color: ${theme.colors.primaryBg};
-    height: 90vh;
-
+    min-height: 100vh;
     
+
+    @media ${theme.media.tablet} {
+        padding: 50px 0;
+        min-height: auto;
+    }
+
+    @media ${theme.media.mobile} {
+        padding: 20px 0;
+        background-color: ${theme.colors.fontDark};
+    }
 `;
 
 const TitleWrapper = styled.div`
     position: relative;
     margin-bottom: 60px;
     text-align: center;
+   
+    
+    @media ${theme.media.mobile}{
+        margin-bottom: 40px;
+        padding-top: 40px;
+    }
 `;
 
 const ConditionsTitle = styled.h2`
-    font-size: 2.5rem;
+    font-size: 2.4rem;
     color: ${theme.colors.fontDark};
     margin-bottom: 15px;
     position: relative;
     display: inline-block;
+    
+    @media ${theme.media.mobile}{
+        font-size: 2rem;
+        color: white;
+    }
 `;
 
 const TitleUnderline = styled.div`
@@ -132,26 +158,82 @@ const TitleUnderline = styled.div`
 
 const GridLayout = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 45px;
     position: relative;
     z-index: 2;
+
+
+    @media (max-width: 900px) {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+
+
+    }
+
+    @media (max-width: 576px) {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 20px;
+    }
 `;
 
-const ConditionCard = styled.div<{ $color: string }>`
+const ConditionCard = styled.div<{ color: string; isFirstThree: boolean }>`
     background: white;
     border-radius: 16px;
-    padding: 30px;
+    padding: 38px 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     position: relative;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-top: 4px solid ${props => props.$color};
+    border-top: 4px solid ${props => props.color};
+
+    &:nth-child(4) {
+        margin: 0 auto;
+    }
+
+    &:nth-child(5) {
+        grid-column: 2;
+    }
 
     &:hover {
         transform: translateY(-5px);
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
     }
+
+    @media (max-width: 900px) {
+        grid-column: ${props => props.isFirstThree ? 'auto' : 'span 1'};
+
+        /* Первые три карточки в первом ряду, последние две во втором */
+        &:nth-child(4) {
+            grid-column: 1;
+        }
+
+        &:nth-child(5) {
+            grid-column: 2;
+        }
+    }
+
+    @media (max-width: 600px) {
+        padding: 25px 20px;
+        /* На маленьких экранах делаем 2 колонки */
+        &:nth-child(1), &:nth-child(2) {
+            grid-column: span 1;
+        }
+
+        &:nth-child(3) {
+            grid-column: 1;
+        }
+
+        &:nth-child(4) {
+            grid-column: 2;
+        }
+
+        &:nth-child(5) {
+            grid-column: 1;
+
+
+        }
+    }
+
 `;
 
 const IconWrapper = styled.div<{ $color: string }>`
@@ -164,13 +246,24 @@ const IconWrapper = styled.div<{ $color: string }>`
     justify-content: center;
     margin-bottom: 20px;
     color: ${props => props.$color};
+    
+    @media ${theme.media.mobile}{
+        width: 40px;
+        height: 40px;
+        margin-bottom: 15px;
+        
+    }
 `;
 
 const Content = styled.div`
     h3 {
-        font-size: 1.25rem;
+        font-size: 1.2rem;
         color: ${theme.colors.fontDark};
         margin-bottom: 12px;
+
+        @media ${theme.media.mobile}{
+            font-size: 1rem;
+        }
     }
 
     p {
@@ -178,10 +271,12 @@ const Content = styled.div`
         line-height: 1.6;
         color: ${theme.colors.font};
         margin: 0;
+        
+        @media ${theme.media.mobile}{
+            font-size: 0.85rem;
+        }
     }
 `;
-
-
 
 const BackgroundPattern = styled.div`
     position: absolute;
