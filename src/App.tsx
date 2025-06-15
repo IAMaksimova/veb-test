@@ -7,6 +7,7 @@ import {useMediaQuery} from "react-responsive";
 import {Conditions} from "./layout/sections/conditions/Conditions.tsx";
 import {Feedback} from "./layout/sections/feedback/Feedback.tsx";
 import {Application} from "./layout/sections/application/Application.tsx";
+import {Partners} from "./layout/sections/partners/Partners.tsx";
 
 export type ScrollToSec = {
     scrollToSection: (sectionId: string) => void
@@ -39,7 +40,7 @@ function App() {
             <Conditions/>
             <Feedback/>
             <Application/>
-            {/*<Partners/>*/}
+            <Partners/>
             {/*<Footer/>*/}
         </>
     )

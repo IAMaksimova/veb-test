@@ -48,12 +48,47 @@ const Title = styled.h2`
     color: ${theme.colors.font};
     font-weight: 600;
     font-size: 4vh;
-`
+    margin-bottom: 1.5vh;
+    text-align: center;
+    line-height: 1.2;
+
+    @media ${theme.media.tablet} {
+        font-size: 3.2vh;
+        margin-bottom: 1.2vh;
+    }
+
+    @media ${theme.media.mobile} {
+        font-size: 24px; /* Фиксированный размер для мобильных */
+        margin-bottom: 12px;
+    }
+
+    @media (max-width: 360px) {
+        font-size: 22px;
+    }
+`;
 
 const SubTitle = styled.p`
     font-size: 2.2vh;
     color: rgba(110, 110, 110, 0.61);
-`
+    text-align: center;
+    max-width: 80%;
+    margin: 0 auto;
+    line-height: 1.4;
+
+    @media ${theme.media.tablet} {
+        font-size: 2vh;
+        max-width: 90%;
+    }
+
+    @media ${theme.media.mobile} {
+        font-size: 16px; /* Фиксированный размер для мобильных */
+        max-width: 95%;
+    }
+
+    @media (max-width: 360px) {
+        font-size: 14px;
+    }
+`;
 
 const LogoWrap = styled.div`
     display: flex;
