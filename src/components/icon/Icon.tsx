@@ -11,9 +11,9 @@ type IconPropsType = {
 };
 export const Icon: React.FC<IconPropsType> = ({
                                                   iconId,
-                                                  width = "40",
-                                                  height = "40",
-                                                  viewBox = "0 -10 35 35",
+                                                  width = "30",
+                                                  height = "30",
+                                                  viewBox = "0 0 22 22",
                                                   hoverColor
                                               }) => {
     return (

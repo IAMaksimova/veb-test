@@ -17,7 +17,7 @@ export const Partners = () => {
     return (
         <SPartners>
 
-            <FlexWrapper wrap={'wrap'} direction={'column'} style={{height: '40%'}}>
+            <FlexWrapper direction={'column'}>
                 <Title>Наши партнеры</Title>
                 <SubTitle>Высшие учебные заведения, с которыми мы работаем</SubTitle>
             </FlexWrapper>
@@ -41,6 +41,18 @@ const SPartners = styled.section`
     background-color: white;
     text-align: center;
     padding: 8vh;
+    ${FlexWrapper}{
+        height: 40%;
+    }
+    
+    @media ${theme.media.mobile}{
+        height: 60vh;
+        padding: 6vh;
+        ${FlexWrapper}{
+            height: 25%;
+        }
+    }
+    
 `
 
 
