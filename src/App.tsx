@@ -6,6 +6,7 @@ import {Challenge} from "./layout/sections/challenge/Challenge.tsx";
 import {useMediaQuery} from "react-responsive";
 import {Conditions} from "./layout/sections/conditions/Conditions.tsx";
 import {Feedback} from "./layout/sections/feedback/Feedback.tsx";
+import {Application} from "./layout/sections/application/Application.tsx";
 
 export type ScrollToSec = {
     scrollToSection: (sectionId: string) => void
@@ -37,7 +38,7 @@ function App() {
             <Directions scrollToSection={scrollToSection} isMobile={isMobile}/>
             <Conditions/>
             <Feedback/>
-            {/*<Application/>*/}
+            <Application/>
             {/*<Partners/>*/}
             {/*<Footer/>*/}
         </>

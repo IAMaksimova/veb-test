@@ -4,10 +4,10 @@ import {FiCheckCircle} from "react-icons/fi";
 import {theme} from "../../../styles/Theme.ts";
 import student from "../../../assets/images/student.png";
 
-
 interface FormState {
     firstName: string;
     lastName: string;
+    patronymic: string;
     university: string;
     degree: string;
     year: string;
@@ -22,6 +22,7 @@ export const Application = () => {
     const [formData, setFormData] = useState<FormState>({
         firstName: '',
         lastName: '',
+        patronymic: '',
         university: '',
         degree: '',
         year: '',
@@ -66,6 +67,7 @@ export const Application = () => {
         setFormData({
             firstName: '',
             lastName: '',
+            patronymic: '',
             university: '',
             degree: '',
             year: '',
@@ -91,6 +93,7 @@ export const Application = () => {
         return (
             formData.firstName.length > 0 &&
             formData.lastName.length > 0 &&
+            formData.patronymic.length > 0 &&
             formData.university.length > 0 &&
             formData.degree.length > 0 &&
             formData.year.length > 0 &&
@@ -124,6 +127,18 @@ export const Application = () => {
                         </FormGroup>
 
                         <FormGroup>
+                            <Label htmlFor="patronymic">Отчество*</Label>
+                            <InputField
+                                type="text"
+                                id="patronymic"
+                                name="patronymic"
+                                value={formData.patronymic}
+                                onChange={handleChange}
+                                required
+                            />
+                        </FormGroup>
+
+                        <FormGroup>
                             <Label htmlFor="university">ВУЗ*</Label>
                             <InputField
                                 type="text"
@@ -134,33 +149,24 @@ export const Application = () => {
                                 required
                             />
                         </FormGroup>
-
                         <FormGroup>
-                            <Label htmlFor="degree">Степень обучения*</Label>
+                            <Label htmlFor="year">Курс*</Label>
                             <SelectField
-                                id="degree"
-                                name="degree"
-                                value={formData.degree}
+                                id="year"
+                                name="year"
+                                value={formData.year}
                                 onChange={handleChange}
                                 required
+                                disabled={!formData.degree}
                             >
-                                <option value="">Выберите степень</option>
-                                <option value="бакалавриат">Бакалавриат</option>
-                                <option value="магистратура">Магистратура</option>
+                                {yearOptions[formData.degree as keyof typeof yearOptions]?.map((year) => (
+                                    <option key={year} value={year}>{year}</option>
+                                ))}
                             </SelectField>
                         </FormGroup>
 
-                        <FormGroup>
-                            <Label htmlFor="specialty">Специальность*</Label>
-                            <InputField
-                                type="text"
-                                id="specialty"
-                                name="specialty"
-                                value={formData.specialty}
-                                onChange={handleChange}
-                                required
-                            />
-                        </FormGroup>
+
+
 
                         <FormGroup>
                             <Label htmlFor="email">Email*</Label>
@@ -199,20 +205,33 @@ export const Application = () => {
                                 required
                             />
                         </FormGroup>
+
                         <FormGroup>
-                            <Label htmlFor="year">Курс*</Label>
+                            <Label htmlFor="degree">Степень обучения*</Label>
                             <SelectField
-                                id="year"
-                                name="year"
-                                value={formData.year}
+                                id="degree"
+                                name="degree"
+                                value={formData.degree}
                                 onChange={handleChange}
                                 required
-                                disabled={!formData.degree}
                             >
-                                {yearOptions[formData.degree as keyof typeof yearOptions]?.map((year) => (
-                                    <option key={year} value={year}>{year}</option>
-                                ))}
+                                <option value="">Выберите степень</option>
+                                <option value="бакалавриат">Бакалавриат</option>
+                                <option value="магистратура">Магистратура</option>
                             </SelectField>
+                        </FormGroup>
+
+
+                        <FormGroup>
+                            <Label htmlFor="specialty">Специальность*</Label>
+                            <InputField
+                                type="text"
+                                id="specialty"
+                                name="specialty"
+                                value={formData.specialty}
+                                onChange={handleChange}
+                                required
+                            />
                         </FormGroup>
 
 
@@ -242,7 +261,7 @@ export const Application = () => {
                                 required
                             />
                             <ConsentLabel htmlFor="consent">
-                                Я согласен на обработку персональных данных*
+                                Я согласен (на) на обработку персональных данных*
                             </ConsentLabel>
                         </ConsentGroup>
                     </RightColumn>
@@ -265,6 +284,52 @@ export const Application = () => {
         </SApplication>
     );
 };
+
+const fadeIn = keyframes`
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+`
+const BackgroundPattern = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 30%, rgba(7, 206, 184, 0.08) 0%, transparent 25%),
+    radial-gradient(circle at 80% 70%, rgba(7, 206, 184, 0.08) 0%, transparent 25%);
+    z-index: 0;
+`;
+
+const FormHeader = styled.div`
+    text-align: center;
+    margin-bottom: 32px;
+`
+const Label = styled.label`
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #4a5568;
+    font-weight: 500;
+`;
+
+const FileInputContainer = styled.div`
+    position: relative;
+    margin-top: 4px;
+`;
+
+const FileInput = styled.input`
+    position: absolute;
+    opacity: 0;
+    width: 0.1px;
+    height: 0.1px;
+`;
+
 const StudentImage = styled.img`
     position: absolute;
     left: 7%;
@@ -276,62 +341,43 @@ const StudentImage = styled.img`
     filter:
             blur(0.6px)
             drop-shadow(0 10px 20px rgba(0,0,0,0.2))
-            sepia(0.3)    // Добавляет легкий "винтажный" эффект как основа
-            brightness(0.95) // Слегка уменьшает яркость
-            hue-rotate(5deg) // Сдвигает цвета в холодный спектр
+            sepia(0.3)
+            brightness(0.95)
+            hue-rotate(5deg)
             saturate(0.7);
-            // Уменьшает насыщенность для естественного вида 
 
-    @media ${theme.media.tablet} {
+    @media ${theme.media.tablet}, ${theme.media.mobile} {
         display: none;
     }
-`
+`;
+
 const LeftColumn = styled.div`
     flex: 1;
+    
+    @media ${theme.media.mobile} {
+        margin-bottom: 0;
+    }
 `;
 
 const RightColumn = styled.div`
     flex: 1;
 `;
 
-const fadeIn = keyframes`
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-`;
-
-// const floatAnimation = keyframes`
-//     0% { transform: translateY(0px); }
-//     50% { transform: translateY(-10px); }
-//     100% { transform: translateY(0px); }
-// `;
-
-
 const SApplication = styled.section`
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 110vh;
-    padding-top: 8vh;
+    min-height: 124vh;
+    padding-top: 6vh;
     position: relative;
     background-color: ${theme.colors.font};
     overflow: hidden;
-`;
-
-const BackgroundPattern = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 30%, rgba(7, 206, 184, 0.08) 0%, transparent 25%),
-    radial-gradient(circle at 80% 70%, rgba(7, 206, 184, 0.08) 0%, transparent 25%);
-    z-index: 0;
+    
+    @media ${theme.media.mobile} {
+        min-height: auto;
+        padding: 20px 0;
+        align-items: flex-start;
+    }
 `;
 
 const FormContainer = styled.div`
@@ -345,11 +391,19 @@ const FormContainer = styled.div`
     position: relative;
     z-index: 1;
     animation: ${fadeIn} 0.6s ease-out;
-`;
-
-const FormHeader = styled.div`
-    text-align: center;
-    margin-bottom: 32px;
+    
+    @media ${theme.media.tablet} {
+        padding: 30px;
+        margin: 20px;
+        width: calc(100% - 40px);
+    }
+    
+    @media ${theme.media.mobile} {
+        padding: 20px 16px;
+        margin: 16px;
+        width: calc(100% - 32px);
+        border-radius: 12px;
+    }
 `;
 
 const FormTitle = styled.h2`
@@ -371,12 +425,22 @@ const FormTitle = styled.h2`
         background: linear-gradient(90deg, #07CEB8, #2d3748);
         border-radius: 3px;
     }
+    
+    @media ${theme.media.mobile} {
+        font-size: 22px;
+        margin-bottom: 6px;
+    }
 `;
 
 const FormSubtitle = styled.p`
     font-size: 16px;
     color: #718096;
     margin-top: 12px;
+    
+    @media ${theme.media.mobile} {
+        font-size: 14px;
+        margin-top: 8px;
+    }
 `;
 
 const TwoColumnForm = styled.form`
@@ -386,20 +450,21 @@ const TwoColumnForm = styled.form`
 
     @media (max-width: 768px) {
         grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    @media ${theme.media.mobile} {
+        gap: 12px;
     }
 `;
 
 const FormGroup = styled.div`
     margin-bottom: 20px;
     position: relative;
-`;
-
-const Label = styled.label`
-    display: block;
-    margin-bottom: 8px;
-    font-size: 14px;
-    color: #4a5568;
-    font-weight: 500;
+    
+    @media ${theme.media.mobile} {
+        margin-bottom: 16px;
+    }
 `;
 
 const InputField = styled.input`
@@ -420,6 +485,11 @@ const InputField = styled.input`
 
     &::placeholder {
         color: #cbd5e0;
+    }
+    
+    @media ${theme.media.mobile} {
+        padding: 10px 14px;
+        font-size: 16px; // Увеличиваем для удобства ввода на мобильных
     }
 `;
 
@@ -448,18 +518,12 @@ const SelectField = styled.select`
         background-color: #edf2f7;
         color: #a0aec0;
     }
-`;
-
-const FileInputContainer = styled.div`
-    position: relative;
-    margin-top: 4px;
-`;
-
-const FileInput = styled.input`
-    position: absolute;
-    opacity: 0;
-    width: 0.1px;
-    height: 0.1px;
+    
+    @media ${theme.media.mobile} {
+        padding: 10px 14px;
+        font-size: 16px;
+        
+    }
 `;
 
 const FileInputLabel = styled.label`
@@ -474,6 +538,7 @@ const FileInputLabel = styled.label`
     cursor: pointer;
     transition: all 0.3s ease;
     color: #4a5568;
+    min-height: 44px; // Минимальная высота для удобства касания
 
     &:hover {
         background-color: #edf2f7;
@@ -484,6 +549,11 @@ const FileInputLabel = styled.label`
         margin-right: 8px;
         color: #07CEB8;
     }
+    
+    @media ${theme.media.mobile} {
+        padding: 10px 14px;
+        font-size: 16px;
+    }
 `;
 
 const ConsentGroup = styled.div`
@@ -493,6 +563,12 @@ const ConsentGroup = styled.div`
     padding-top: 24px;
     border-top: 1px solid #edf2f7;
     grid-column: 1 / -1;
+    
+    @media ${theme.media.mobile} {
+        margin-top: 16px;
+        padding-top: 16px;
+        align-items: flex-start;
+    }
 `;
 
 const CheckboxInput = styled.input`
@@ -505,6 +581,8 @@ const CheckboxInput = styled.input`
     background-color: #f8fafc;
     transition: all 0.2s;
     cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 2px; // Выравнивание по базовой линии текста
 
     &:checked {
         background-color: #07CEB8;
@@ -519,6 +597,11 @@ const CheckboxInput = styled.input`
         outline: none;
         box-shadow: 0 0 0 3px rgba(7, 206, 184, 0.2);
     }
+    
+    @media ${theme.media.mobile} {
+        width: 20px;
+        height: 20px;
+    }
 `;
 
 const ConsentLabel = styled.label`
@@ -526,6 +609,11 @@ const ConsentLabel = styled.label`
     color: #4a5568;
     line-height: 1.5;
     cursor: pointer;
+    
+    @media ${theme.media.mobile} {
+        font-size: 14px;
+        line-height: 1.4;
+    }
 `;
 
 const FormFooter = styled.div`
@@ -536,6 +624,13 @@ const FormFooter = styled.div`
     padding-top: 24px;
     border-top: 1px solid #edf2f7;
     grid-column: 1 / -1;
+    
+    @media ${theme.media.mobile} {
+        flex-direction: column-reverse;
+        gap: 16px;
+        margin-top: 24px;
+        padding-top: 16px;
+    }
 `;
 
 const Button = styled.button`
@@ -551,6 +646,8 @@ const Button = styled.button`
     display: flex;
     align-items: center;
     box-shadow: 0 4px 6px rgba(7, 206, 184, 0.2);
+    min-width: 180px;
+    justify-content: center;
 
     &:hover {
         background-color: #05a392;
@@ -567,6 +664,12 @@ const Button = styled.button`
         transform: none;
         box-shadow: none;
         cursor: not-allowed;
+    }
+    
+    @media ${theme.media.mobile} {
+        width: 100%;
+        padding: 12px 24px;
+        font-size: 16px;
     }
 `;
 
@@ -590,5 +693,12 @@ const ResetButton = styled.button`
     &:focus {
         outline: none;
         box-shadow: 0 0 0 3px rgba(113, 128, 150, 0.2);
+    }
+    
+    @media ${theme.media.mobile} {
+        width: 100%;
+        text-align: center;
+        padding: 10px 16px;
+        font-size: 15px;
     }
 `;
