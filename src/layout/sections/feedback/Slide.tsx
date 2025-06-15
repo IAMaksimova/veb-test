@@ -44,6 +44,7 @@ const Avatar = styled.img<{ avatar: string }>`
 
 const Text = styled.p`
     margin: 20px 0;
+    line-height: 1.4;
 `
 
 const Name = styled.span`
@@ -51,4 +52,5 @@ const Name = styled.span`
 `
 const Role = styled.span`
     color: rgba(128, 128, 128, 0.5);
+    font-size: 0.8rem;
 `
