@@ -1,27 +1,27 @@
 import styled from "styled-components";
 import { Container } from "../../../components/Container.ts";
 import { theme } from "../../../styles/Theme.ts";
-import {Users, Calendar, Home, Clock, Award, Flag} from 'react-feather';
+import {Users, Calendar, Home, Clock, Award} from 'react-feather';
 import React from "react";
 
 const conditions = [
     {
         title: "Для кого",
-        text: "Студенты 3 и 4-го курса бакалавриата и студентов магистратуры",
+        text: "Студенты 3 и 4-го курса бакалавриата и студенты магистратуры, граждане РФ",
         icon: <Users size={24} />,
         color: "#540D6E",
         decorType: 'triangle'
     },
     {
         title: "Продолжительность",
-        text: "6 месяцев",
+        text: "6 месяцев с возможностью продления",
         icon: <Calendar size={24} />,
         color: '#07CEB8',
         decorType: 'triangle'
     },
     {
         title: "Формат работы",
-        text: "Практика подразумевает посещение офиса",
+        text: "Практика проходит в очном формате",
         icon: <Home size={24} />,
         color: "#540D6E",
         decorType: 'triangle'
@@ -34,17 +34,10 @@ const conditions = [
         decorType: 'triangle'
     },
     {
-        title: "Гражданство",
-        text: "Только для граждан РФ",
-        icon: <Flag size={24} />,
-        color: "#540D6E",
-        decorType: 'triangle'
-    },
-    {
         title: "Вознаграждение",
         text: "Практика является неоплачиваемой",
         icon: <Award size={24} />,
-        color: "#07CEB8",
+        color: "#540D6E",
         decorType: 'triangle'
     }
 ];
@@ -82,7 +75,6 @@ export const Conditions:React.FC = () => {
     );
 };
 
-// Новый компонент для круглого декора
 const CircleDecoration = styled.div<{ $color: string }>`
   position: absolute;
   bottom: 15px;
@@ -93,7 +85,6 @@ const CircleDecoration = styled.div<{ $color: string }>`
   background: ${props => props.$color}15;
 `;
 
-// Модифицированный CornerDecoration для треугольников
 const CornerDecoration = styled.div<{ $color: string }>`
   position: absolute;
   bottom: 0;
@@ -106,10 +97,10 @@ const CornerDecoration = styled.div<{ $color: string }>`
 `;
 
 const SConditions = styled.section`
-    padding: 80px 0;
+    padding: 70px ;
     position: relative;
     background-color: ${theme.colors.primaryBg};
-    min-height: 100vh;
+    min-height: 72vh;
     
 
     @media ${theme.media.tablet} {
@@ -130,7 +121,7 @@ const TitleWrapper = styled.div`
    
     
     @media ${theme.media.mobile}{
-        margin-bottom: 40px;
+        margin-bottom: 20px;
         padding-top: 40px;
     }
 `;
@@ -159,27 +150,23 @@ const TitleUnderline = styled.div`
 const GridLayout = styled.div`
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 45px;
+    gap: 30px;
     position: relative;
     z-index: 2;
-
-
+    
     @media (max-width: 900px) {
         grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-
-
     }
 
     @media (max-width: 576px) {
         grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-        gap: 20px;
     }
 `;
 
 const ConditionCard = styled.div<{ color: string; isFirstThree: boolean }>`
     background: white;
     border-radius: 16px;
-    padding: 38px 20px;
+    padding: 35px 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     position: relative;
     overflow: hidden;
@@ -189,10 +176,7 @@ const ConditionCard = styled.div<{ color: string; isFirstThree: boolean }>`
     &:nth-child(4) {
         margin: 0 auto;
     }
-
-    &:nth-child(5) {
-        grid-column: 2;
-    }
+    
 
     &:hover {
         transform: translateY(-5px);
@@ -201,36 +185,38 @@ const ConditionCard = styled.div<{ color: string; isFirstThree: boolean }>`
 
     @media (max-width: 900px) {
         grid-column: ${props => props.isFirstThree ? 'auto' : 'span 1'};
-
-        /* Первые три карточки в первом ряду, последние две во втором */
+        
         &:nth-child(4) {
             grid-column: 1;
         }
 
         &:nth-child(5) {
             grid-column: 2;
+            
         }
     }
 
     @media (max-width: 600px) {
-        padding: 25px 20px;
-        /* На маленьких экранах делаем 2 колонки */
+        padding: 15px 10px;
+     
         &:nth-child(1), &:nth-child(2) {
             grid-column: span 1;
         }
 
         &:nth-child(3) {
-            grid-column: 1;
+            grid-column: -1 / 1;
+            justify-self: center;
+            width: 95%;
         }
 
         &:nth-child(4) {
-            grid-column: 2;
+            grid-column: 1;
+            
         }
 
         &:nth-child(5) {
-            grid-column: 1;
-
-
+            grid-column: 2 ; 
+        
         }
     }
 

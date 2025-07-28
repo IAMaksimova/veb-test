@@ -15,7 +15,7 @@ export const items: MenuItem[] = [
     { label: 'Главная', value: 'main' },
     { label: 'О практике', value: 'challenge' },
     { label: 'Направления', value: 'directions' },
-    { label: 'Условия', value: 'conditions' },
+    { label: 'Особенности программы', value: 'conditions' },
 ];
 
 export const Header: React.FC<ScrollToSec> = ({ scrollToSection }) => {

@@ -1,0 +1,60 @@
+import styled from "styled-components";
+import {theme} from "../../../../styles/Theme.ts";
+import React from "react";
+
+type FormHeader = {
+    title: string
+    subtitle: string
+}
+
+export const FormHeader: React.FC<FormHeader> = ({title, subtitle}) => {
+    return (
+        <SFormHeader>
+            <FormTitle>{title}</FormTitle>
+            <FormSubtitle>{subtitle}</FormSubtitle>
+        </SFormHeader>
+    );
+};
+
+const SFormHeader = styled.div`
+    text-align: center;
+    margin-bottom: 32px;
+`
+
+const FormTitle = styled.h2`
+    font-size: 28px;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 8px;
+    position: relative;
+    display: inline-block;
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, #07CEB8, #2d3748);
+        border-radius: 3px;
+    }
+
+    @media ${theme.media.mobile} {
+        font-size: 22px;
+        margin-bottom: 6px;
+    }
+`;
+
+const FormSubtitle = styled.p`
+    font-size: 16px;
+    color: #718096;
+    margin-top: 12px;
+
+    @media ${theme.media.mobile} {
+        font-size: 14px;
+        margin-top: 8px;
+    }
+`;
+

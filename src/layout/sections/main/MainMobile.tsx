@@ -1,106 +1,137 @@
 import React from "react";
 import type {ScrollToSec} from "../../../App.tsx";
-import {Container} from "../../../components/Container.ts";
 import vebChemodan from "../../../assets/images/veb-chemodan.png";
-import {Accent} from "./Main.tsx";
 import styled from "styled-components";
 import {theme} from "../../../styles/Theme.ts";
+
 
 
 export const MainMobile: React.FC<ScrollToSec> = ({ scrollToSection }) => {
     return (
         <SMainMobile>
             <Container>
-                <MobileContent>
-                    <MobileImage src={vebChemodan} alt="Чемодан ВЭБ" />
-                    <MobileTextWrap>
-                        <MobileLargeText>
-                            <Accent>Практика</Accent> в ВЭБ.РФ
-                        </MobileLargeText>
-                        <MobileSmallText>Мы предоставляем возможности, вы — создаете будущее</MobileSmallText>
-                    </MobileTextWrap>
-                    <MobileButton onClick={() => scrollToSection('application')}>
-                        ПОДАТЬ ЗАЯВКУ
-                    </MobileButton>
-                </MobileContent>
+                <ContentGrid>
+                    <ImageColumn>
+                        <Suitcase
+                            src={vebChemodan}
+                            alt="Чемодан ВЭБ.РФ"
+                            loading="lazy"
+                        />
+                    </ImageColumn>
+
+                    <TextColumn>
+                        <Heading>
+                            <Accent>Практика</Accent>  <br/> в ВЭБ.РФ
+                        </Heading>
+
+                        <Divider/>
+
+                        <Slogan>
+                            Мы предоставляем возможности,<br/>
+                            <strong>вы — создаёте будущее</strong>
+                        </Slogan>
+
+                        <MobileButton onClick={() => scrollToSection('application')}>
+                            ПОДАТЬ ЗАЯВКУ
+                        </MobileButton>
+                    </TextColumn>
+                </ContentGrid>
             </Container>
         </SMainMobile>
     );
 };
-
-// Мобильные стили
-const SMainMobile = styled.section`
-    display: none;
-    background: ${theme.colors.secondaryAccent};
-    padding: 20px;
-    min-height: 100vh;
-
-
-    @media ${theme.media.tablet} {
-        display: block;
-    }
-`;
-
-const MobileContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
-  padding: 20px 0;
-
-`;
-
-const MobileImage = styled.img`
-    width: 90%;
-    max-width: 300px;
-    height: auto;
-    object-fit: contain;
-    margin-top: 5vh;
-    
-    
-`;
-
-const MobileTextWrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  text-align: center;
-  color: ${theme.colors.font};
-`;
-
-const MobileLargeText = styled.h2`
-  font-size: 24px;
-  font-weight: 500;
-  line-height: 1.3;
-    color: white;
-`;
-
-const MobileSmallText = styled.p`
-  font-size: 16px;
-  font-weight: 500;
-    color: white;
-`;
-
-const MobileButton = styled.button`
-  background: white;
-  color: ${theme.colors.font};
-  padding: 12px 30px;
-  border-radius: 5vw;
-  font-size: 16px;
-  font-weight: 500;
-  margin-top: 20px;
-  transition: all 0.3s ease;
-    width: 75vw;
-    height: 6vh;
-  
-  &:hover {
-    background: ${theme.colors.accent};
-    transform: translateY(-2px);
-  }
-`;
-
 export const MainSmallText = styled.p`
   font-size: 3vh;
   font-weight: 500;
   text-align: left;
+`;
+// Стили
+const SMainMobile = styled.section`
+    min-height: 100vh;
+    padding: 32px 0;
+    background: ${theme.colors.fontDark};
+    display: flex;
+    align-items: center;
+`;
+
+const Container = styled.div`
+    width: 100%;
+    padding: 0 24px;
+`;
+
+const ContentGrid = styled.div`
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 40px;
+    max-width: 400px;
+    margin: 0 auto;
+`;
+
+const ImageColumn = styled.div`
+    display: flex;
+    justify-content: center;
+`;
+
+const Suitcase = styled.img`
+    width: 100%;
+    max-width: 290px;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.3));
+`;
+
+const TextColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+`;
+
+const Heading = styled.h1`
+    font-size: clamp(32px, 8vw, 40px);
+    font-weight: 600;
+    line-height: 1.2;
+    color: white;
+    margin: 0 0 16px 0;
+`;
+
+const Accent = styled.span`
+    color: ${theme.colors.accent};
+`;
+
+const Divider = styled.div`
+    width: 64px;
+    height: 3px;
+    background: ${theme.colors.accent};
+    margin: 0 auto 24px auto;
+`;
+
+const Slogan = styled.p`
+    font-size: clamp(16px, 4vw, 18px);
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 32px 0;
+
+    strong {
+        color: white;
+        font-weight: 500;
+    }
+`;
+
+const MobileButton = styled.button`
+    background: white;
+    color: ${theme.colors.font};
+    padding: 12px 30px;
+    border-radius: 5vw;
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    width: 75vw;
+    height: 7vh;
+
+    &:hover {
+        background: ${theme.colors.accent};
+        transform: translateY(-2px);
+    }
 `;

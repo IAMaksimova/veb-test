@@ -41,8 +41,8 @@ export const Directions: React.FC<ScrollToSec & IsMobile> = ({scrollToSection, i
             <Container>
                 <FlexWrapper wrap={'wrap'} direction={'column'} align={'flex-start'}>
                     <DirectionsHeader>
-                        <DirectionsTitle>Навигатор подразделений</DirectionsTitle>
-                        <DirectionsSubtitle>Набор открыт в следующих подразделениях:</DirectionsSubtitle>
+                        <DirectionsTitle>Блоки и компетенции</DirectionsTitle>
+                        <DirectionsSubtitle>Направления профессионального развития в ВЭБ.РФ</DirectionsSubtitle>
                     </DirectionsHeader>
 
                     <FlexWrapper wrap={'wrap'} justify={'center'} gap={'20px'} style={{width: '90vw'}}>
@@ -68,7 +68,7 @@ export const Directions: React.FC<ScrollToSec & IsMobile> = ({scrollToSection, i
                 <ModalOverlay isClosing={isClosing}>
                     <ModalContent>
                         <CloseButton onClick={handleCloseModal}>&times;</CloseButton>
-                        <ModalHeader>{selectedDirection.name}</ModalHeader>
+                        <ModalHeader>{selectedDirection.name} {selectedDirection.secondName}</ModalHeader>
 
                         <ContentGrid>
                             <InfoBlock>
@@ -120,18 +120,28 @@ const Marker = styled.span`
 `;
 
 const SDirectons = styled.section`
-    height: 80vh;
+    height: 90vh;
     background: ${theme.colors.font};
     width: 100%;
     padding-left: 6vw;
+    padding-top: 10vh;
 
     @media ${theme.media.mobile}, ${theme.media.tablet} {
         background: white;
         padding-left: 0;
-        padding-top: 5vh;
+        padding-top: 3vh;
+        height: 80vh;
     }
-}
-`;
+
+    @media ${theme.media.mobile_medium} {
+        height: 84vh;
+        font-size: 11px;
+    }
+    @media ${theme.media.mobile_small} {
+        height: 100vh;
+        font-size: 10px;
+    }
+}`;
 
 const DirectionsHeader = styled.div`
     width: 100%;
@@ -150,12 +160,12 @@ const DirectionsTitle = styled.h2`
     font-weight: 500;
     font-size: 5vh;
     text-align: left;
-    
+
     @media ${theme.media.mobile}, ${theme.media.tablet}{
         font-size: 2.8vh;
         margin-bottom: 1vh;
     }
-    
+
 `;
 
 const DirectionsSubtitle = styled.h3`
@@ -187,7 +197,7 @@ const DirectionItem = styled.div`
 const DirectionItemMobile  = styled.div`
     display: flex;
     align-items: center;
-    padding: 10px 10px;
+    padding: 10px;
     background: rgba(7, 206, 184, 0.1);
     border-left: 3px solid #07CEB8;
     transition: all 0.3s ease;
@@ -196,8 +206,8 @@ const DirectionItemMobile  = styled.div`
     &:before {
         content: "→";
         color: #07CEB8;
-        margin-right: 12px;
-        font-size: 14px;
+        margin-right: 10px;
+        font-size: 12px;
     }
 
     &:hover {
@@ -245,7 +255,7 @@ const ModalHeader = styled.h2`
     margin-bottom: 24px;
     color: #2c3e50;
     font-weight: 600;
-    
+
     @media ${theme.media.tablet}{
         width: 80%;
         font-size: 16px;

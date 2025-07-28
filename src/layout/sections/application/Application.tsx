@@ -1,290 +1,140 @@
 import styled, {keyframes} from "styled-components";
-import {type ChangeEvent, useState} from "react";
-import {FiCheckCircle} from "react-icons/fi";
+import {type FormEvent, useState} from "react";
 import {theme} from "../../../styles/Theme.ts";
 import student from "../../../assets/images/student.png";
+import {ApplicationForm} from "./applicationForm/ApplicationForm.tsx";
+import {FormHeader} from "./applicationForm/FormHeader.tsx";
+import {db} from "../../../firebase.ts";
+import {collection, addDoc} from 'firebase/firestore';
+import {v4} from "uuid";
+import {FaCheckCircle, FaSpinner} from "react-icons/fa";
 
-interface FormState {
+export type FormState = {
     firstName: string;
     lastName: string;
     patronymic: string;
     university: string;
     degree: string;
-    year: string;
+    course: string;
     specialty: string;
     phone: string;
     email: string;
-    resume: File | null;
+    resume: null | File;
     consent: boolean;
 }
 
 export const Application = () => {
     const [formData, setFormData] = useState<FormState>({
-        firstName: '',
-        lastName: '',
-        patronymic: '',
-        university: '',
+        firstName: 'Валера',
+        lastName: 'Валеров',
+        patronymic: 'Валерьвич',
+        university: 'РУТ',
         degree: '',
-        year: '',
-        specialty: '',
-        phone: '',
-        email: '',
+        course: '',
+        specialty: 'Дальнобойщик',
+        phone: '79053699856',
+        email: 'valer@gmail.com',
         resume: null,
         consent: false
     });
 
-    // Годы обучения в зависимости от степени
-    const yearOptions = {
-        '': ['Выберите курс'],
-        'бакалавриат': ['1 курс', '2 курс', '3 курс', '4 курс', '5 курс', '6 курс'],
-        'магистратура': ['1 курс', '2 курс']
-    };
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const {name, value} = e.target;
-        if (name === 'degree') {
-            setFormData({
-                ...formData,
-                degree: value,
-                year: ''
-            });
-        } else {
-            setFormData({...formData, [name]: value});
-        }
-    };
-
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            setFormData({...formData, resume: e.target.files[0]});
-        }
-    };
-
-    const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({...formData, consent: e.target.checked});
-    };
-
-    const handleReset = () => {
-        setFormData({
-            firstName: '',
-            lastName: '',
-            patronymic: '',
-            university: '',
-            degree: '',
-            year: '',
-            specialty: '',
-            phone: '',
-            email: '',
-            resume: null,
-            consent: false
-        });
-    };
-
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        console.log("Form Data:", formData);
+        setIsSubmitting(true);
+
+        try {
+            await addDoc(collection(db, 'applications'), {
+                id: v4(),
+                fullName: `${formData.firstName} ${formData.lastName} ${formData.patronymic}`,
+                dateOfBirth: '25-10-2004',
+                university: formData.university,
+                degree: formData.degree,
+                course: Number(formData.course),
+                specialty: formData.specialty,
+                phone: formData.phone,
+                email: formData.email,
+                resume: formData.resume ? formData.resume.name : null,
+                consent: formData.consent,
+                hireDate: new Date(),
+                status: 'new'
+            });
+
+            setShowSuccessModal(true);
+
+            // Сброс формы после успешной отправки
+            setFormData({
+                firstName: '',
+                lastName: '',
+                patronymic: '',
+                university: '',
+                degree: '',
+                course: '',
+                specialty: '',
+                phone: '',
+                email: '',
+                resume: null,
+                consent: false,
+            });
+        } catch (error) {
+            console.error('Ошибка при отправке анкеты:', error);
+            alert('Произошла ошибка при отправке анкеты');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
-    const isValidEmail = (email: string) => {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
-    };
-
-    const isFormValid = () => {
-        return (
-            formData.firstName.length > 0 &&
-            formData.lastName.length > 0 &&
-            formData.patronymic.length > 0 &&
-            formData.university.length > 0 &&
-            formData.degree.length > 0 &&
-            formData.year.length > 0 &&
-            formData.specialty.length > 0 &&
-            isValidEmail(formData.email) &&
-            formData.phone.length > 0 &&
-            formData.consent
-        );
+    const closeSuccessModal = () => {
+        setShowSuccessModal(false);
     };
 
     return (
         <SApplication id={'application'}>
             <BackgroundPattern/>
             <FormContainer>
-                <FormHeader>
-                    <FormTitle>Анкета кандидата</FormTitle>
-                    <FormSubtitle>Практика в ВЭБ.РФ – ваш первый шаг в карьере</FormSubtitle>
-                </FormHeader>
-                <TwoColumnForm onSubmit={handleSubmit}>
-                    <LeftColumn>
-                        <FormGroup>
-                            <Label htmlFor="firstName">Имя*</Label>
-                            <InputField
-                                type="text"
-                                id="firstName"
-                                name="firstName"
-                                value={formData.firstName}
-                                onChange={handleChange}
-                                required
-                            />
-                        </FormGroup>
-
-                        <FormGroup>
-                            <Label htmlFor="patronymic">Отчество*</Label>
-                            <InputField
-                                type="text"
-                                id="patronymic"
-                                name="patronymic"
-                                value={formData.patronymic}
-                                onChange={handleChange}
-                                required
-                            />
-                        </FormGroup>
-
-                        <FormGroup>
-                            <Label htmlFor="university">ВУЗ*</Label>
-                            <InputField
-                                type="text"
-                                id="university"
-                                name="university"
-                                value={formData.university}
-                                onChange={handleChange}
-                                required
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label htmlFor="year">Курс*</Label>
-                            <SelectField
-                                id="year"
-                                name="year"
-                                value={formData.year}
-                                onChange={handleChange}
-                                required
-                                disabled={!formData.degree}
-                            >
-                                {yearOptions[formData.degree as keyof typeof yearOptions]?.map((year) => (
-                                    <option key={year} value={year}>{year}</option>
-                                ))}
-                            </SelectField>
-                        </FormGroup>
-
-
-
-
-                        <FormGroup>
-                            <Label htmlFor="email">Email*</Label>
-                            <InputField
-                                type="email"
-                                id="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                required
-                            />
-                        </FormGroup>
-                    </LeftColumn>
-
-                    <RightColumn>
-                        <FormGroup>
-                            <Label htmlFor="lastName">Фамилия*</Label>
-                            <InputField
-                                type="text"
-                                id="lastName"
-                                name="lastName"
-                                value={formData.lastName}
-                                onChange={handleChange}
-                                required
-                            />
-                        </FormGroup>
-
-                        <FormGroup>
-                            <Label htmlFor="phone">Телефон*</Label>
-                            <InputField
-                                type="tel"
-                                id="phone"
-                                name="phone"
-                                value={formData.phone}
-                                onChange={handleChange}
-                                required
-                            />
-                        </FormGroup>
-
-                        <FormGroup>
-                            <Label htmlFor="degree">Степень обучения*</Label>
-                            <SelectField
-                                id="degree"
-                                name="degree"
-                                value={formData.degree}
-                                onChange={handleChange}
-                                required
-                            >
-                                <option value="">Выберите степень</option>
-                                <option value="бакалавриат">Бакалавриат</option>
-                                <option value="магистратура">Магистратура</option>
-                            </SelectField>
-                        </FormGroup>
-
-
-                        <FormGroup>
-                            <Label htmlFor="specialty">Специальность*</Label>
-                            <InputField
-                                type="text"
-                                id="specialty"
-                                name="specialty"
-                                value={formData.specialty}
-                                onChange={handleChange}
-                                required
-                            />
-                        </FormGroup>
-
-
-                        <FormGroup>
-                            <Label htmlFor="resume">Резюме</Label>
-                            <FileInputContainer>
-                                <FileInput
-                                    type="file"
-                                    id="resume"
-                                    name="resume"
-                                    onChange={handleFileChange}
-                                    accept=".pdf,.doc,.docx"
-                                />
-                                <FileInputLabel htmlFor="resume">
-                                    {formData.resume ? formData.resume.name : 'Прикрепить файл'}
-                                </FileInputLabel>
-                            </FileInputContainer>
-                        </FormGroup>
-
-                        <ConsentGroup>
-                            <CheckboxInput
-                                type="checkbox"
-                                id="consent"
-                                name="consent"
-                                checked={formData.consent}
-                                onChange={handleCheckboxChange}
-                                required
-                            />
-                            <ConsentLabel htmlFor="consent">
-                                Я согласен (на) на обработку персональных данных*
-                            </ConsentLabel>
-                        </ConsentGroup>
-                    </RightColumn>
-
-
-                </TwoColumnForm>
-
-                <FormFooter>
-                    <ResetButton type="button" onClick={handleReset}>
-                        Очистить форму
-                    </ResetButton>
-                    <Button type="submit" disabled={!isFormValid()}>
-                        Отправить заявку
-                        <FiCheckCircle size={18} style={{marginLeft: '8px'}}/>
-                    </Button>
-                </FormFooter>
+                <FormHeader title={'Анкета кандидата'} subtitle={'Практика в ВЭБ.РФ – ваш первый шаг в карьере'}/>
+                <ApplicationForm
+                    setFormData={setFormData}
+                    formData={formData}
+                    handleSubmit={handleSubmit}
+                />
             </FormContainer>
-
             <StudentImage src={student} alt="Студент"/>
+
+            {/* Модальное окно успешной отправки */}
+            {showSuccessModal && (
+                <SuccessModal onClick={closeSuccessModal}>
+                    <SuccessContent onClick={e => e.stopPropagation()}>
+                        <SuccessIcon>
+                            <FaCheckCircle/>
+                        </SuccessIcon>
+                        <SuccessTitle>Анкета отправлена!</SuccessTitle>
+                        <SuccessText>
+                            Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.
+                        </SuccessText>
+                        <CloseModalButton onClick={closeSuccessModal}>
+                            Закрыть
+                        </CloseModalButton>
+                    </SuccessContent>
+                </SuccessModal>
+            )}
+
+            {/* Индикатор загрузки */}
+            {isSubmitting && (
+                <LoadingOverlay>
+                    <LoadingSpinner>
+                        <FaSpinner/>
+                        <span>Отправка данных...</span>
+                    </LoadingSpinner>
+                </LoadingOverlay>
+            )}
         </SApplication>
     );
 };
 
+// Анимации
 const fadeIn = keyframes`
     from {
         opacity: 0;
@@ -294,7 +144,117 @@ const fadeIn = keyframes`
         opacity: 1;
         transform: translateY(0);
     }
-`
+`;
+
+const spin = keyframes`
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+`;
+
+const scaleIn = keyframes`
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+`;
+
+// Стили для новых компонентов
+const SuccessModal = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+`;
+
+const SuccessContent = styled.div`
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    animation: ${scaleIn} 0.3s ease;
+`;
+
+const SuccessIcon = styled.div`
+    font-size: 60px;
+    color: ${theme.colors.accent};
+    margin-bottom: 20px;
+`;
+
+const SuccessTitle = styled.h3`
+    font-size: 24px;
+    margin-bottom: 15px;
+
+`;
+
+const SuccessText = styled.p`
+    font-size: 16px;
+    margin-bottom: 25px;
+    line-height: 1.5;
+`;
+
+const CloseModalButton = styled.button`
+    background: ${theme.colors.accent};
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        transform: translateY(-2px);
+    }
+`;
+
+const LoadingOverlay = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+`;
+
+const LoadingSpinner = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    
+    svg {
+        font-size: 40px;
+        color: ${theme.colors.accent};
+        animation: ${spin} 1s linear infinite;
+    }
+    
+    span {
+        font-size: 18px;
+    }
+`;
+
+// Остальные стили остаются без изменений
 const BackgroundPattern = styled.div`
     position: absolute;
     top: 0;
@@ -306,30 +266,6 @@ const BackgroundPattern = styled.div`
     z-index: 0;
 `;
 
-const FormHeader = styled.div`
-    text-align: center;
-    margin-bottom: 32px;
-`
-const Label = styled.label`
-    display: block;
-    margin-bottom: 8px;
-    font-size: 14px;
-    color: #4a5568;
-    font-weight: 500;
-`;
-
-const FileInputContainer = styled.div`
-    position: relative;
-    margin-top: 4px;
-`;
-
-const FileInput = styled.input`
-    position: absolute;
-    opacity: 0;
-    width: 0.1px;
-    height: 0.1px;
-`;
-
 const StudentImage = styled.img`
     position: absolute;
     left: 7%;
@@ -337,42 +273,23 @@ const StudentImage = styled.img`
     height: 70%;
     max-height: 60vh;
     z-index: 1;
-    
-    filter:
-            blur(0.6px)
-            drop-shadow(0 10px 20px rgba(0,0,0,0.2))
-            sepia(0.3)
-            brightness(0.95)
-            hue-rotate(5deg)
-            saturate(0.7);
+    filter: blur(0.6px) drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2)) sepia(0.3) brightness(0.95) hue-rotate(5deg) saturate(0.7);
 
     @media ${theme.media.tablet}, ${theme.media.mobile} {
         display: none;
     }
 `;
 
-const LeftColumn = styled.div`
-    flex: 1;
-    
-    @media ${theme.media.mobile} {
-        margin-bottom: 0;
-    }
-`;
-
-const RightColumn = styled.div`
-    flex: 1;
-`;
-
 const SApplication = styled.section`
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 124vh;
+    min-height: 130vh;
     padding-top: 6vh;
     position: relative;
     background-color: ${theme.colors.font};
     overflow: hidden;
-    
+
     @media ${theme.media.mobile} {
         min-height: auto;
         padding: 20px 0;
@@ -391,314 +308,17 @@ const FormContainer = styled.div`
     position: relative;
     z-index: 1;
     animation: ${fadeIn} 0.6s ease-out;
-    
+
     @media ${theme.media.tablet} {
         padding: 30px;
         margin: 20px;
         width: calc(100% - 40px);
     }
-    
+
     @media ${theme.media.mobile} {
         padding: 20px 16px;
         margin: 16px;
         width: calc(100% - 32px);
         border-radius: 12px;
-    }
-`;
-
-const FormTitle = styled.h2`
-    font-size: 28px;
-    font-weight: 600;
-    color: #2d3748;
-    margin-bottom: 8px;
-    position: relative;
-    display: inline-block;
-
-    &::after {
-        content: '';
-        position: absolute;
-        bottom: -8px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 60px;
-        height: 3px;
-        background: linear-gradient(90deg, #07CEB8, #2d3748);
-        border-radius: 3px;
-    }
-    
-    @media ${theme.media.mobile} {
-        font-size: 22px;
-        margin-bottom: 6px;
-    }
-`;
-
-const FormSubtitle = styled.p`
-    font-size: 16px;
-    color: #718096;
-    margin-top: 12px;
-    
-    @media ${theme.media.mobile} {
-        font-size: 14px;
-        margin-top: 8px;
-    }
-`;
-
-const TwoColumnForm = styled.form`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-
-    @media (max-width: 768px) {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-    
-    @media ${theme.media.mobile} {
-        gap: 12px;
-    }
-`;
-
-const FormGroup = styled.div`
-    margin-bottom: 20px;
-    position: relative;
-    
-    @media ${theme.media.mobile} {
-        margin-bottom: 16px;
-    }
-`;
-
-const InputField = styled.input`
-    width: 100%;
-    padding: 12px 16px;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    background-color: #f8fafc;
-
-    &:focus {
-        border-color: #07CEB8;
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(7, 206, 184, 0.2);
-        background-color: #fff;
-    }
-
-    &::placeholder {
-        color: #cbd5e0;
-    }
-    
-    @media ${theme.media.mobile} {
-        padding: 10px 14px;
-        font-size: 16px; // Увеличиваем для удобства ввода на мобильных
-    }
-`;
-
-const SelectField = styled.select`
-    width: 100%;
-    padding: 12px 16px;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    background-color: #f8fafc;
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 16px;
-
-    &:focus {
-        border-color: #07CEB8;
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(7, 206, 184, 0.2);
-        background-color: #fff;
-    }
-
-    &:disabled {
-        background-color: #edf2f7;
-        color: #a0aec0;
-    }
-    
-    @media ${theme.media.mobile} {
-        padding: 10px 14px;
-        font-size: 16px;
-        
-    }
-`;
-
-const FileInputLabel = styled.label`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px 16px;
-    background-color: #f8fafc;
-    border: 1px dashed #cbd5e0;
-    border-radius: 8px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: #4a5568;
-    min-height: 44px; // Минимальная высота для удобства касания
-
-    &:hover {
-        background-color: #edf2f7;
-        border-color: #a0aec0;
-    }
-
-    svg {
-        margin-right: 8px;
-        color: #07CEB8;
-    }
-    
-    @media ${theme.media.mobile} {
-        padding: 10px 14px;
-        font-size: 16px;
-    }
-`;
-
-const ConsentGroup = styled.div`
-    display: flex;
-    align-items: center;
-    margin-top: 24px;
-    padding-top: 24px;
-    border-top: 1px solid #edf2f7;
-    grid-column: 1 / -1;
-    
-    @media ${theme.media.mobile} {
-        margin-top: 16px;
-        padding-top: 16px;
-        align-items: flex-start;
-    }
-`;
-
-const CheckboxInput = styled.input`
-    width: 18px;
-    height: 18px;
-    margin-right: 12px;
-    border: 1px solid #e2e8f0;
-    border-radius: 4px;
-    appearance: none;
-    background-color: #f8fafc;
-    transition: all 0.2s;
-    cursor: pointer;
-    flex-shrink: 0;
-    margin-top: 2px; // Выравнивание по базовой линии текста
-
-    &:checked {
-        background-color: #07CEB8;
-        border-color: #07CEB8;
-        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='20 6 9 17 4 12'%3e%3c/polyline%3e%3c/svg%3e");
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 12px;
-    }
-
-    &:focus {
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(7, 206, 184, 0.2);
-    }
-    
-    @media ${theme.media.mobile} {
-        width: 20px;
-        height: 20px;
-    }
-`;
-
-const ConsentLabel = styled.label`
-    font-size: 14px;
-    color: #4a5568;
-    line-height: 1.5;
-    cursor: pointer;
-    
-    @media ${theme.media.mobile} {
-        font-size: 14px;
-        line-height: 1.4;
-    }
-`;
-
-const FormFooter = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 32px;
-    padding-top: 24px;
-    border-top: 1px solid #edf2f7;
-    grid-column: 1 / -1;
-    
-    @media ${theme.media.mobile} {
-        flex-direction: column-reverse;
-        gap: 16px;
-        margin-top: 24px;
-        padding-top: 16px;
-    }
-`;
-
-const Button = styled.button`
-    padding: 14px 28px;
-    background-color: #07CEB8;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    box-shadow: 0 4px 6px rgba(7, 206, 184, 0.2);
-    min-width: 180px;
-    justify-content: center;
-
-    &:hover {
-        background-color: #05a392;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(7, 206, 184, 0.25);
-    }
-
-    &:active {
-        transform: translateY(0);
-    }
-
-    &:disabled {
-        background-color: #cbd5e0;
-        transform: none;
-        box-shadow: none;
-        cursor: not-allowed;
-    }
-    
-    @media ${theme.media.mobile} {
-        width: 100%;
-        padding: 12px 24px;
-        font-size: 16px;
-    }
-`;
-
-const ResetButton = styled.button`
-    padding: 12px 20px;
-    background: none;
-    border: none;
-    color: #718096;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    border-radius: 6px;
-
-    &:hover {
-        color: #2d3748;
-        background-color: #edf2f7;
-        text-decoration: none;
-    }
-
-    &:focus {
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(113, 128, 150, 0.2);
-    }
-    
-    @media ${theme.media.mobile} {
-        width: 100%;
-        text-align: center;
-        padding: 10px 16px;
-        font-size: 15px;
     }
 `;

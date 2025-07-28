@@ -9,6 +9,8 @@ export const theme = {
         secondaryAccent: '#323E48'
     },
     media: {
+        mobile_small: "(max-width: 376px)",
+        mobile_medium: "(max-width: 391px)",
         mobile: "(max-width: 576px)",
         tablet: "(max-width: 768px)",
     },

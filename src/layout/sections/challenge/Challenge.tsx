@@ -20,26 +20,26 @@ export const Challenge = () => {
                 <TextWrapper>
                     <SectionTitle>Готов раскрыть <u>свой потенциал</u>?</SectionTitle>
                     <ChallengeText>
-                        В ВЭБ.РФ, главном институте развития страны, вы сами определяете свой путь. Это не просто практика – это шанс реализовать свой потенциал, взять максимум от возможностей и заложить фундамент успешной карьеры. Что вы получите, зависит только от вас
+                        В ВЭБ.РФ, главном институте развития страны, вы сами определяете свой путь. Это не просто практика – это шанс реализовать свой потенциал, взять максимум от возможностей и заложить фундамент успешной карьеры.
                     </ChallengeText>
                 </TextWrapper>
 
                 <CardsWrapper>
                     <LeftColumn>
-                        <ChallengeElement height={'32vh'} content={'01'}>
+                        <ChallengeElement height={'34vh'} content={'01'}>
                             Возможность участвовать в реальных проектах, решая сложные и интересные задачи
                         </ChallengeElement>
-                        <ChallengeElement height={'20vh'} content={'03'}>
+                        <ChallengeElement height={'22vh'} content={'03'}>
                             Ценные навыки и опыт, которые вы сможете применить в будущем
                         </ChallengeElement>
                     </LeftColumn>
 
                     <RightColumn>
-                        <ChallengeElement height={'22vh'} content={'02'}>
+                        <ChallengeElement height={'24vh'} content={'02'}>
                             Взаимодействие с лучшими специалистами в области финансов, экономики и управления
                         </ChallengeElement>
                         <BottomRow>
-                            <ChallengeElement height={'30vh'} content={'04'} accent>
+                            <ChallengeElement height={'32vh'} content={'04'} accent>
                                 Профессиональные связи, которые помогут расти и строить деловую репутацию
                             </ChallengeElement>
                             <DecElement/>
@@ -52,11 +52,11 @@ export const Challenge = () => {
 };
 
 const SChallenge = styled.section`
-    height: 100vh;
+    height: 102vh;
     min-height: 800px;
     background-color: #323E48;
     color: white;
-    padding: 4vw 0 0 6vw;
+    padding: 6vw 0 6vw 6vw;
     position: relative;
     overflow-x: hidden;
 

@@ -3,16 +3,19 @@ import { Container } from "../../../components/Container.ts";
 import { SectionTitle } from "../challenge/Challenge.tsx";
 import { theme } from "../../../styles/Theme.ts";
 import { FlexWrapper } from "../../../components/FlexWrapper.ts";
-import ava1 from '../../../assets/avatars/ava-1.jpg';
-import ava2 from '../../../assets/avatars/ava-2.png';
+import ava1 from '../../../assets/avatars/vova-borodin-2.jpeg';
+import ava2 from '../../../assets/avatars/sofya-babak-2.jpg'
+import ava3 from '../../../assets/avatars/egor-yakimov.jpg'
+import decor from '../../../assets/images/design-elements/abstract11g.png'
+import decor1 from '../../../assets/images/design-elements/abstract21g.png'
 import { Slider } from "./Slider.tsx";
-//import groupBgc from '../../../assets/images/feedback-group.jpg'
 import {useState} from "react";
 
 export type Review = {
     id: number
     ava: string
     name: string
+    preview: string
     text: string
     role: string
 }
@@ -20,57 +23,37 @@ export type Review = {
 const reviewsData: Review[] = [
     {
         id: 1,
-        ava: ava2,
+        ava: ava1,
         name: 'Владимир Бородин',
         role: 'Сотрудник ВЭБ.РФ, практикант 2024 блока "Бизнес. Партнерство. Развитие"',
+        preview: 'Практика в ВЭБ.РФ — для целеустремлённых. Важно чётко понимать сферу профессиональных интересов',
         text: 'Студенты, которые приходят на практику, должны понимать, что им интересно, где бы они хотели развиваться как профессионал, где они хотят попробовать свои силы. Практикант, приходящий в ВЭБ, должен обладать желанием получить какие то знания, должен обладать целеустремленностью, настойчивостью. Самое главное это использовать те возможности, которые дает ВЭБ, и по максимуму питаться профессиональными знаниями.'
     },
     {
         id: 2,
-        ava: ava1,
-        name: 'Михаил Бибо',
-        role: 'Практикант отдела веб-разработки',
-        text: 'Стажировка в "WebCraft" стала для меня настоящим прорывом в frontend-разработке! За 3 месяца я с нуля освоил React и TypeScript, участвовал в создании интерактивного интерфейса. Особенно ценю, что мне доверили реальные задачи, а не просто "подавать кофе" — мой код попал в продакшн! Спасибо за крутой старт!'
+        ava: ava2,
+        name: 'Софья Бабак',
+        role: 'Сотрудник ВЭБ.РФ, практикант 2023 блока "Бизнес. Партнерство. Развитие"',
+        preview: 'Практика в ВЭБ.РФ — путь от обучения до реальных задач. Вырастаешь в профессионала и станешь частью сильной команды',
+        text: 'Практика в ВЭБ.РФ длится шесть месяцев — этого вполне достаточно, чтобы освоить специальность, развить профессиональные навыки и получить поистине бесценный опыт. Постепенно перед практикантом открываются новые задачи, расширяются полномочия, растёт уровень ответственности — и в какой-то момент ты начинаешь чувствовать себя полноценным членом команды.'
     },
     {
         id: 3,
-        ava: ava1,
-        name: 'Михаил Берлиозов',
-        role: 'Практикант отдела веб-разработки',
-        text: 'тралалайло тралала'
+        ava: ava3,
+        name: 'Егор Якимов',
+        role: 'Сотрудник ВЭБ.РФ, практикант 2024 блока "Бизнес. Партнерство. Развитие"',
+        preview: 'Практика в ВЭБ.РФ — это проекты, меняющие страну. Практика здесь позволяет получить опыт работы над важными для страны проектами',
+        text: 'Практика в ВЭБ.РФ стала для меня уникальной возможностью участвовать в проектах, которые реально влияют на социально-экономическое развитие страны. Это бесценный опыт работы с настоящими профессионалами — экспертами, чей уровень мастерства задает высокую планку для всей отрасли. Особенно ценно, что даже будучи практикантом, ты ощущаешь свою причастность к масштабным задачам государственного значения.'
     },
 
 ]
 
-const mobileReviews = [
-    {
-        id: 1,
-        ava: ava2,
-        name: 'Иван Гулевский',
-        username: '@guyhawkins',
-        text: 'Впечатлен профессионализмом и вниманием к деталям'
-    },
-    {
-        id: 2,
-        ava: ava1,
-        name: 'Аня Ропай',
-        username: '@karialynn88',
-        text: 'Безупречный опыт от начала до конца. Очень рекомендую!'
-    },
-    {
-        id: 3,
-        ava: ava1,
-        name: 'Михаил Бибо',
-        username: '@janecooper',
-        text: 'Надежно и заслуживает доверия. Очень облегчили мне жизнь!'
-    }
-];
 // Компонент мобильных отзывов
 const MobileTestimonials = () => {
-    const [selectedReview, setSelectedReview] = useState<typeof mobileReviews[0] | null>(null);
+    const [selectedReview, setSelectedReview] = useState<typeof reviewsData[0] | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const openModal = (review: typeof mobileReviews[0]) => {
+    const openModal = (review: typeof reviewsData[0]) => {
         setSelectedReview(review);
         setIsModalOpen(true);
         document.body.style.overflow = 'hidden'; // Блокируем скролл страницы
@@ -85,14 +68,14 @@ const MobileTestimonials = () => {
         <>
             <TestimonialsContainer>
                 <TestimonialsTrack>
-                    {mobileReviews.map(review => (
+                    {reviewsData.map(review => (
                         <TestimonialCard key={review.id} onClick={() => openModal(review)}>
-                            <Text>"{review.text}"</Text>
+                            <Text>"{review.preview}"</Text>
                             <Author>
                                 <Avatar src={review.ava} alt={review.name}/>
                                 <AuthorInfo>
                                     <Name>{review.name}</Name>
-                                    <Username>{review.username}</Username>
+                                    <Username>{review.role}</Username>
                                 </AuthorInfo>
                             </Author>
                         </TestimonialCard>
@@ -107,12 +90,11 @@ const MobileTestimonials = () => {
                         <CloseButton onClick={closeModal}>
                             <CrossIcon />
                         </CloseButton>
-                        <ModalText>"{selectedReview.text}"</ModalText>
                         <ModalAuthor>
                             <ModalAvatar src={selectedReview.ava} alt={selectedReview.name}/>
                             <ModalAuthorInfo>
                                 <ModalName>{selectedReview.name}</ModalName>
-                                <ModalUsername>{selectedReview.username}</ModalUsername>
+                                <ModalUsername>{selectedReview.role}</ModalUsername>
                             </ModalAuthorInfo>
                         </ModalAuthor>
                         <FullText>
@@ -162,7 +144,7 @@ export const Feedback = () => {
                 <FlexWrapperDesktop>
                     <TextContentDesktop>
                         <FeedbackTitle>Истории практикантов</FeedbackTitle>
-                        <FeedbackSubtitle>Реальный опыт тех, кто начинал свой путь</FeedbackSubtitle>
+                        <FeedbackSubtitle>Молодые сотрудники и практиканты ВЭБ.РФ делятся своим опытом прохождения практики в госкорпорации</FeedbackSubtitle>
                     </TextContentDesktop>
                     <SliderDesktop>
                         <Slider reviews={reviewsData} autoPlayInterval={10000}/>
@@ -230,10 +212,16 @@ const Author = styled.div`
 `;
 
 const Avatar = styled.img`
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     object-fit: cover;
+    object-position: center center;
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background-color: transparent;
 `;
 
 const AuthorInfo = styled.div`
@@ -286,9 +274,52 @@ const SliderDesktop = styled.div`
 `;
 
 const SFeedback = styled.section`
-    height: 75vh;
+    height: 72vh;
     color: ${theme.colors.font};
     position: relative;
+    
+    
+    &:before, &:after{
+        content: '';
+        background-image: url(${decor});
+        background-size: contain;
+        background-repeat: no-repeat;
+        position: absolute;
+        z-index: 5;
+        right: 13%;
+        top: -7%;
+        width: 7vw;
+        min-width: 70px;
+        max-width: 110px;
+        height: 14vh;
+        rotate: -15deg;
+
+        @media ${theme.media.mobile} {
+            display: none;
+        }
+    }
+    
+    &:after{
+        content: '';
+        background-image: url(${decor1});
+        background-size: contain;
+        background-repeat: no-repeat;
+        position: absolute;
+        z-index: 5;
+        top: 82%;
+        right: 48%;
+        width: 7vw;
+        min-width: 70px;
+        max-width: 110px;
+        height: 17vh;
+        rotate: -15deg;
+
+        @media ${theme.media.mobile} {
+            display: none;
+        }
+    }
+    
+    
     
 
     @media ${theme.media.tablet} {
@@ -390,14 +421,6 @@ const CloseButton = styled.button`
     }
 `;
 
-const ModalText = styled.p`
-    font-size: 1.2rem;
-    line-height: 1.6;
-    color: ${theme.colors.fontDark};
-    margin-bottom: 25px;
-    font-style: italic;
-    font-weight: 500;
-`;
 
 const FullText = styled.p`
     font-size: 1rem;
