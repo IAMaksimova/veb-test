@@ -134,7 +134,7 @@ const ConditionsTitle = styled.h2`
     display: inline-block;
     
     @media ${theme.media.mobile}{
-        font-size: 2rem;
+        font-size: 24px;;
         color: white;
     }
 `;
@@ -197,7 +197,7 @@ const ConditionCard = styled.div<{ color: string; isFirstThree: boolean }>`
     }
 
     @media (max-width: 600px) {
-        padding: 15px 10px;
+        padding: 15px;
      
         &:nth-child(1), &:nth-child(2) {
             grid-column: span 1;

@@ -42,7 +42,7 @@ const FormTitle = styled.h2`
     }
 
     @media ${theme.media.mobile} {
-        font-size: 22px;
+        font-size:24px;;
         margin-bottom: 6px;
     }
 `;

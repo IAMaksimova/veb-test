@@ -104,7 +104,7 @@ const SChallenge = styled.section`
             width: 7vw;
             min-width: 70px;
             max-width: 110px;
-            height: 14vh;
+            height: 17vh;
         }
     }
 
@@ -169,6 +169,9 @@ const ChallengeText = styled(MainSmallText)`
     @media ${theme.media.tablet} {
         width: 100%;
         font-size: 16px;
+    }
+    @media ${theme.media.mobile} {
+        font-size: 14px;
     }
 `;
 
@@ -258,6 +261,7 @@ const ChallengeElement = styled.div<ElementSize & {accent?: boolean}>`
     @media ${theme.media.mobile} {
         min-height: 150px;
         padding: 15px;
+        font-size: 14px;
     }
 `;
 

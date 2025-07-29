@@ -2,7 +2,7 @@ import styled, {keyframes} from "styled-components";
 import {theme} from "../../../styles/Theme.ts";
 import {Container} from "../../../components/Container.ts";
 import {FlexWrapper} from "../../../components/FlexWrapper.ts";
-import {useState} from "react";
+import React, {useState} from "react";
 import type {IsMobile, ScrollToSec} from "../../../App.tsx";
 import {type Direction, directions} from "./Diresctions_Data.ts";
 
@@ -130,15 +130,15 @@ const SDirectons = styled.section`
         background: white;
         padding-left: 0;
         padding-top: 3vh;
-        height: 80vh;
+        height: 82vh;
     }
 
     @media ${theme.media.mobile_medium} {
-        height: 84vh;
+        height: 86vh;
         font-size: 11px;
     }
     @media ${theme.media.mobile_small} {
-        height: 100vh;
+        height: 102vh;
         font-size: 10px;
     }
 }`;
@@ -162,7 +162,7 @@ const DirectionsTitle = styled.h2`
     text-align: left;
 
     @media ${theme.media.mobile}, ${theme.media.tablet}{
-        font-size: 2.8vh;
+        font-size: 24px;;
         margin-bottom: 1vh;
     }
 
@@ -176,7 +176,7 @@ const DirectionsSubtitle = styled.h3`
 
     @media ${theme.media.mobile}, ${theme.media.tablet}{
         color: ${theme.colors.fontDark};
-        font-size: 1.6vh;
+        font-size: 12px;;
     }
 `;
 

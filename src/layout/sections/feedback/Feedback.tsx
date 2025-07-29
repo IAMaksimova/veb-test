@@ -155,7 +155,7 @@ export const Feedback = () => {
                 <MobileVersion>
                     <MobileHeader>
                         <FeedbackTitle>Истории практикантов</FeedbackTitle>
-                        <FeedbackSubtitle>Реальный опыт тех, кто начинал свой путь</FeedbackSubtitle>
+                        <FeedbackSubtitle>Молодые сотрудники и практиканты ВЭБ.РФ делятся своим опытом прохождения практики в госкорпорации</FeedbackSubtitle>
                     </MobileHeader>
                     <MobileTestimonials />
                 </MobileVersion>
@@ -348,7 +348,7 @@ const FeedbackTitle = styled(SectionTitle)`
     }
 
     @media ${theme.media.mobile} {
-        font-size: 2.5vh;
+        font-size: 24px;
         margin-bottom: 10px;
     }
 `;

@@ -118,7 +118,7 @@ export const ApplicationForm: React.FC<ApplicationForm> = ({setFormData, formDat
                         required
                     />
                 </FormGroup>
-                <FormGroup mobileOrder={7} desktopOrder={8}>
+                <FormGroup mobileOrder={8} desktopOrder={8}>
                     <Label htmlFor="course">Курс*</Label>
                     <SelectField
                         id="course"
@@ -133,7 +133,7 @@ export const ApplicationForm: React.FC<ApplicationForm> = ({setFormData, formDat
                         ))}
                     </SelectField>
                 </FormGroup>
-                <FormGroup mobileOrder={8} desktopOrder={7}>
+                <FormGroup mobileOrder={7} desktopOrder={7}>
                     <Label htmlFor="degree">Степень обучения*</Label>
                     <SelectField
                         id="degree"
@@ -361,7 +361,7 @@ const SelectField = styled.select`
 
     @media ${theme.media.mobile} {
         padding: 10px 14px;
-        font-size: 16px;
+        font-size: 13px;
 
     }
 `;
@@ -378,7 +378,7 @@ const FileInputLabel = styled.label`
     cursor: pointer;
     transition: all 0.3s ease;
     color: #4a5568;
-    min-height: 44px; // Минимальная высота для удобства касания
+    min-height: 44px; 
 
     &:hover {
         background-color: #edf2f7;
@@ -422,7 +422,7 @@ const CheckboxInput = styled.input`
     transition: all 0.2s;
     cursor: pointer;
     flex-shrink: 0;
-    margin-top: 2px; // Выравнивание по базовой линии текста
+    margin-top: 2px; 
 
     &:checked {
         background-color: #07CEB8;
@@ -453,7 +453,6 @@ const ConsentLabel = styled.label`
   
 
     @media ${theme.media.mobile} {
-        font-size: 14px;
-        line-height: 1.4;
+        font-size: 13px;
     }
 `;

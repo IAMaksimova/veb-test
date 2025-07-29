@@ -40,7 +40,6 @@ function App() {
             <Directions scrollToSection={scrollToSection} isMobile={isMobile}/>
             <Conditions/>
             <Feedback/>
-            {/*<Gallery/>*/}
             <Application/>
             <Partners/>
             <Footer/>
