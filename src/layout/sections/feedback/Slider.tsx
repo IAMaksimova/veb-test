@@ -27,7 +27,7 @@ export const Slider: React.FC<Slider> = ({
 
     const goToPrev = useCallback(() => {
         setCurrentIndex(prev => (prev === 0 ? reviews.length - 1 : prev - 1));
-    }, []);
+    }, [reviews.length]);
 
 
     // Автопрокрутка
@@ -143,6 +143,7 @@ export const Slider: React.FC<Slider> = ({
                                 name={review.name}
                                 text={review.text}
                                 role={review.role}
+                                preview={review.preview}
                             />
                         </SlideWrapper>
                     ))}
