@@ -1,0 +1,19 @@
+{
+  "applications": [
+    {
+      "id": "6abf",
+      "firstName": "Валера",
+      "lastName": "Валеров",
+      "patronymic": "Валерьвич",
+      "university": "РУТ",
+      "degree": "бакалавриат",
+      "year": "5 курс",
+      "specialty": "Хакер",
+      "phone": "79053699856",
+      "email": "valer@gmail.com",
+      "resume": {},
+      "consent": true,
+      "createdAt": "2025-06-23T16:09:30.642Z"
+    }
+  ]
+}

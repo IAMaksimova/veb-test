@@ -50,11 +50,11 @@ const FormTitle = styled.h2`
 const FormSubtitle = styled.p`
     font-size: 16px;
     color: #718096;
-    margin-top: 12px;
+    margin-top: 15px;
 
     @media ${theme.media.mobile} {
         font-size: 14px;
-        margin-top: 8px;
+        margin-top: 15px;
     }
 `;
 

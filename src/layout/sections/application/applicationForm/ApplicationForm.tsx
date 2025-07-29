@@ -233,7 +233,7 @@ type OrderProps =  {
 const Label = styled.label`
     display: block;
     margin-bottom: 8px;
-    font-size: 14px;
+    font-size: 12px;
     color: #4a5568;
     font-weight: 500;
 `;
@@ -278,12 +278,10 @@ const FileInput = styled.input`
 // `;
 
 const FormGroup = styled.div<OrderProps>`
-    margin-bottom: 10px;
     position: relative;
     order: ${props => props.desktopOrder};
 
     @media (max-width: 768px) {
-        margin-bottom: 16px;
         order: ${props => props.mobileOrder};
     }
     
@@ -331,7 +329,7 @@ const InputField = styled.input`
 
     @media ${theme.media.mobile} {
         padding: 10px 14px;
-        font-size: 16px; // Увеличиваем для удобства ввода на мобильных
+        font-size: 13px; // Увеличиваем для удобства ввода на мобильных
     }
 `;
 
@@ -376,7 +374,7 @@ const FileInputLabel = styled.label`
     background-color: #f8fafc;
     border: 1px dashed #cbd5e0;
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 13px;
     cursor: pointer;
     transition: all 0.3s ease;
     color: #4a5568;
@@ -394,7 +392,7 @@ const FileInputLabel = styled.label`
 
     @media ${theme.media.mobile} {
         padding: 10px 14px;
-        font-size: 16px;
+        font-size: 13px;
     }
 `;
 
