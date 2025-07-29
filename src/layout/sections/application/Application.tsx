@@ -4,10 +4,10 @@ import {theme} from "../../../styles/Theme.ts";
 import student from "../../../assets/images/student.png";
 import {ApplicationForm} from "./applicationForm/ApplicationForm.tsx";
 import {FormHeader} from "./applicationForm/FormHeader.tsx";
-import {db} from "../../../firebase.ts";
 import {collection, addDoc} from 'firebase/firestore';
 import {v4} from "uuid";
 import {FaCheckCircle, FaSpinner} from "react-icons/fa";
+import {db} from "../../../firebase.ts";
 
 export type FormState = {
     firstName: string;
@@ -269,7 +269,7 @@ const BackgroundPattern = styled.div`
 const StudentImage = styled.img`
     position: absolute;
     left: 7%;
-    bottom: 0%;
+    bottom: 0;
     height: 70%;
     max-height: 60vh;
     z-index: 1;
@@ -319,6 +319,6 @@ const FormContainer = styled.div`
         padding: 20px 16px;
         margin: 16px;
         width: calc(100% - 32px);
-        border-radius: 12px;
+        //border-radius: 12px;
     }
 `;
