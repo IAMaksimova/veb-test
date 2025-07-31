@@ -5,13 +5,14 @@ import type { ScrollToSec } from "../../App.tsx";
 import { theme } from "../../styles/Theme.ts";
 import {DesktopMenu} from "./headerMenu/DesktopMenu.tsx";
 import {MobileMenu} from "../../components/menu/MobileMenu.tsx";
+import React from "react";
 
 export type MenuItem = {
     label: string;
     value: string;
 };
 
-export const items: MenuItem[] = [
+export const menuItems: MenuItem[] = [
     { label: 'Главная', value: 'main' },
     { label: 'О практике', value: 'challenge' },
     { label: 'Направления', value: 'directions' },
@@ -24,20 +25,17 @@ export const Header: React.FC<ScrollToSec> = ({ scrollToSection }) => {
             <FlexWrapper align={'center'} justify={'space-between'}>
                 <Logo />
 
-                {/* Обертка для десктопного меню */}
                 <DesktopMenuWrapper>
                     <DesktopMenu
-                        menuItems={items}
+                        menuItems={menuItems}
                         scrollToSection={scrollToSection}
                     />
                 </DesktopMenuWrapper>
 
-                {/* Обертка для мобильного меню */}
                 <MobileMenuWrapper>
                     <MobileMenu
-                        menuItems={items}
+                        menuItems={menuItems}
                         scrollToSection={scrollToSection}
-
                     />
                 </MobileMenuWrapper>
             </FlexWrapper>
@@ -71,6 +69,8 @@ const DesktopMenuWrapper = styled.div`
     @media ${theme.media.tablet} {
         display: none;
     }
+    
+    
 `;
 
 const MobileMenuWrapper = styled.div`

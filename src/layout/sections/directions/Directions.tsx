@@ -7,7 +7,7 @@ import type {IsMobile, ScrollToSec} from "../../../App.tsx";
 import {type Direction, directions} from "./Diresctions_Data.ts";
 
 
-export const Directions: React.FC<ScrollToSec & IsMobile> = ({scrollToSection, isMobile}) => {
+export const Directions: React.FC<ScrollToSec & IsMobile> = ({scrollToSection}) => {
     const [selectedDirection, setSelectedDirection] = useState<Direction | null>(null);
     const [isClosing, setIsClosing] = useState(false);
 
@@ -45,14 +45,9 @@ export const Directions: React.FC<ScrollToSec & IsMobile> = ({scrollToSection, i
                         <DirectionsSubtitle>Направления профессионального развития в ВЭБ.РФ</DirectionsSubtitle>
                     </DirectionsHeader>
 
-                    <FlexWrapper wrap={'wrap'} justify={'center'} gap={'20px'} style={{width: '90vw'}}>
+                    <FlexWrapper wrap={'wrap'} justify={'center'} gap={'15px'} style={{width: '86vw'}}>
                         {directions.map((direction) => {
                             return (
-                                isMobile ?
-                                    <DirectionItemMobile key={direction.id} onClick={() => handleDirectionClick(direction)}>
-                                        {direction.name}
-                                    </DirectionItemMobile>
-                                    :
                                     <DirectionItem key={direction.id} onClick={() => handleDirectionClick(direction)}>
                                         {direction.name}
                                     </DirectionItem>
@@ -123,11 +118,9 @@ const SDirectons = styled.section`
     height: 90vh;
     background: ${theme.colors.font};
     width: 100%;
-    padding-left: 6vw;
-    padding-top: 10vh;
+  
 
     @media ${theme.media.mobile}, ${theme.media.tablet} {
-        background: white;
         padding-left: 0;
         padding-top: 3vh;
         height: 82vh;
@@ -175,7 +168,6 @@ const DirectionsSubtitle = styled.h3`
     text-align: left;
 
     @media ${theme.media.mobile}, ${theme.media.tablet}{
-        color: ${theme.colors.fontDark};
         font-size: 12px;;
     }
 `;
@@ -185,35 +177,47 @@ const DirectionItem = styled.div`
     color: ${theme.colors.font};
     border-radius: 50px;
     padding: 20px 30px;
-    font-size: 20px;
+    font-size: ${theme.fontsize_text.tablet};
     cursor: pointer;
     transition: background-color 0.3s ease;
-
+    display: flex;
+    align-items: center;
+    
+    
     &:hover {
         background-color: #05a998;
     }
+    
+    @media ${theme.media.tablet}{
+        padding: 8px 15px;
+        font-size: ${theme.fontsize_text.mobile};
+    }
+    
+    @media ${theme.media.mobile} {
+        font-size: ${theme.fontsize_text.mobile};
+    }
+    
+    
 `;
 
-const DirectionItemMobile  = styled.div`
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    background: rgba(7, 206, 184, 0.1);
-    border-left: 3px solid #07CEB8;
-    transition: all 0.3s ease;
-
-
-    &:before {
-        content: "→";
-        color: #07CEB8;
-        margin-right: 10px;
-        font-size: 12px;
-    }
-
-    &:hover {
-        background: rgba(7, 206, 184, 0.2);
-    }
-`;
+// const DirectionItemMobile  = styled.div`
+//     display: flex;
+//     align-items: center;
+//     padding: 8px 15px;
+//     background: #07CEB8;
+//     transition: all 0.3s ease;
+//     border-radius: 50px;
+//
+//     &:before {
+//         content: "→";
+//         color: #07CEB8;
+//         font-size: 12px;
+//     }
+//
+//     &:hover {
+//         background: rgba(7, 206, 184, 0.2);
+//     }
+// `;
 
 const ModalOverlay = styled.div<{ isClosing: boolean }>`
     position: fixed;

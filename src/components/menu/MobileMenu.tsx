@@ -103,7 +103,7 @@ const MenuOverlay = styled.div<{ isOpen: boolean }>`
     padding: 80px 20px 20px;
     animation: ${slideIn} 0.3s ease-out forwards;
 
-    @media ${theme.media.mobile} {
+    @media ${theme.media.mobile}, ${theme.media.tablet} {
         width: 100%;
         max-width: none;
         

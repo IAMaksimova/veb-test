@@ -1,5 +1,4 @@
 import styled from "styled-components";
-//import {FlexWrapper} from "../../../components/FlexWrapper.ts";
 import {theme} from "../../../styles/Theme.ts";
 import {Container} from "../../../components/Container.ts";
 import triangle from '../../../assets/images/design-elements/abstract40g.png';
@@ -52,11 +51,10 @@ export const Challenge = () => {
 };
 
 const SChallenge = styled.section`
-    height: 102vh;
-    min-height: 800px;
+    min-height: 102vh;
     background-color: #323E48;
     color: white;
-    padding: 6vw 0 6vw 6vw;
+
     position: relative;
     overflow-x: hidden;
 
@@ -67,14 +65,21 @@ const SChallenge = styled.section`
         background-repeat: no-repeat;
         position: absolute;
         z-index: 5;
-        bottom: 36%;
-        right: 25%;
+        bottom: calc(35% - 5vh);
+        //right: calc(30% - 10vh + 1vw);
+        right: calc(22% + 4vw);
         width: 6vw;
         min-width: 60px;
         max-width: 100px;
-        height: 13vh;
+        height: 14vh;
 
-        @media ${theme.media.mobile} {
+
+        @media ${theme.media.laptop} {
+            top: 64%;
+            right: 24%;
+        }
+
+        @media ${theme.media.tablet} {
             top: 60%;
             left: 1%;
             width: 7vw;
@@ -82,6 +87,11 @@ const SChallenge = styled.section`
             max-width: 110px;
             height: 14vh;
         }
+
+   
+      
+
+ 
     }
 
     &:after {
@@ -91,22 +101,39 @@ const SChallenge = styled.section`
         background-repeat: no-repeat;
         position: absolute;
         z-index: 5;
-        bottom: 8%;
+        bottom: calc(10% - 5vh);
         right: 4%;
         width: 7vw;
         min-width: 70px;
         max-width: 110px;
         height: 14vh;
 
-        @media ${theme.media.mobile} {
-            bottom: 60%;
+
+        @media ${theme.media.laptop} {
+            top: 86%;
+            right: 4%;
+    
+        }
+        
+        @media ${theme.media.tablet} {
+            top: 77%;
             right: 4%;
             width: 7vw;
             min-width: 70px;
             max-width: 110px;
-            height: 17vh;
         }
+        
+        @media ${theme.media.mobile}{
+            top: 80%;
+        }
+
+     
     }
+    
+    @media ${theme.media.laptop}{
+        padding-bottom: 0;
+    }
+    
 
     @media ${theme.media.tablet} {
         height: auto;
@@ -129,8 +156,8 @@ const TextWrapper = styled.div`
 export const SectionTitle = styled.h2`
     color: #07CEB8;
     font-weight: 500;
-    font-size: clamp(32px, 5vh, 48px);
-    width: 45vw;
+    font-size: ${theme.fontsize_title.laptop};
+    min-width: 100%;
     line-height: 1.2;
     margin-bottom: 2vh;
 
@@ -149,14 +176,13 @@ export const SectionTitle = styled.h2`
         }
     }
 
-    @media ${theme.media.tablet} {
-        width: 100%;
-        font-size: 28px;
+    @media ${theme.media.tablet}, ${theme.media.laptop} {
+        font-size: ${theme.fontsize_title.tablet};
         margin-bottom: 15px;
     }
 
     @media ${theme.media.mobile} {
-        font-size: 24px;
+        font-size: ${theme.fontsize_title.mobile};
     }
 `;
 
@@ -168,18 +194,19 @@ const ChallengeText = styled(MainSmallText)`
 
     @media ${theme.media.tablet} {
         width: 100%;
-        font-size: 16px;
+        font-size: ${theme.fontsize_text.tablet};
     }
+
     @media ${theme.media.mobile} {
-        font-size: 14px;
+        font-size: ${theme.fontsize_text.mobile};
     }
 `;
 
 const CardsWrapper = styled.div`
     display: flex;
-    gap: 20px;
     width: 95%;
     height: 65%;
+    gap: calc(20px - 0.1vh);
 
     @media ${theme.media.tablet} {
         flex-direction: column;
@@ -191,7 +218,7 @@ const CardsWrapper = styled.div`
 const LeftColumn = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: calc(20px - 0.1vh);
     width: 40%;
 
     @media ${theme.media.tablet} {
@@ -205,6 +232,7 @@ const RightColumn = styled.div`
     gap: 20px;
     width: 60%;
 
+  
     @media ${theme.media.tablet} {
         width: 100%;
     }
@@ -213,17 +241,17 @@ const RightColumn = styled.div`
 const BottomRow = styled.div`
     display: flex;
     gap: 20px;
-    height: 30vh;
-
-    @media ${theme.media.tablet} {
+  
+    
+    @media ${theme.media.laptop}{
         height: auto;
-        flex-direction: column;
     }
+  
 `;
 
 const ChallengeElement = styled.div<ElementSize & {accent?: boolean}>`
-    width: ${props => props.width || '100%'};
-    height: ${props => props.height || 'auto'};
+    // width: calc(${props => props.width || '100%'} - 1vh - 1vw);
+    height: calc(${props => props.height || 'auto'} - 4vh + 4vw);
     border: 1px solid ${props => props.accent ? '#07CEB8' : 'white'};
     border-radius: 25px;
     position: relative;
@@ -232,7 +260,7 @@ const ChallengeElement = styled.div<ElementSize & {accent?: boolean}>`
     align-items: flex-end;
     background: ${props => props.accent ? 'white' : 'transparent'};
     color: ${props => props.accent ? theme.colors.fontDark : 'white'};
-    font-size: clamp(20px, 5vh, 2vh);
+    font-size: calc(1.2rem - 0.1vh);
     line-height: 1.3;
 
     &::before {
@@ -249,36 +277,37 @@ const ChallengeElement = styled.div<ElementSize & {accent?: boolean}>`
         top: 20px;
         left: 20px;
         font-size: 14px;
+        padding: 2vh;
     }
 
+    @media ${theme.media.laptop} {
+        font-size: calc(1rem - 0.3vh);
+        padding: 20px;
+    }
     @media ${theme.media.tablet} {
         padding: 20px;
         min-height: 180px;
         height: auto !important;
-        font-size: 16px;
+        font-size: clamp(10px, 16px, 20px);
     }
 
     @media ${theme.media.mobile} {
         min-height: 150px;
-        padding: 15px;
-        font-size: 14px;
+        font-size: clamp(0.8rem, 1.2rem, 1.5rem);
     }
 `;
 
 const DecElement = styled.div`
     width: 100%;
-    height: 100%;
+    height: auto;
     border: 1px solid #1F696E;
     border-radius: 25px;
     background-image: url('${pattern}');
     background-size: cover;
     opacity: 0.8;
+    
 
-    @media ${theme.media.tablet} {
-        height: 200px;
-    }
-
-    @media ${theme.media.mobile} {
+    @media ${theme.media.mobile}, ${theme.media.tablet} {
         display: none;
     }
 `;

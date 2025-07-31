@@ -9,11 +9,11 @@ export const GlobalStyle = createGlobalStyle`
         padding: 0;
         box-sizing: border-box;
         font-family: "Wix Madefor Display", sans-serif;
-        
+
     }
 
     html {
-        font-size: 16px; // Базовый размер шрифта для десктопа
+        font-size: 16px;
 
         @media ${theme.media.tablet} {
             font-size: 14px;
@@ -32,18 +32,14 @@ export const GlobalStyle = createGlobalStyle`
         width: 100vw;
         min-height: 100vh;
         line-height: 1.5;
-
-     
     }
 
-    // Адаптивные изображения
     img {
         max-width: 100%;
         height: auto;
         display: block;
     }
 
-    // Ссылки
     a {
         text-decoration: none;
         cursor: pointer;
@@ -51,27 +47,25 @@ export const GlobalStyle = createGlobalStyle`
 
     }
 
-    // Списки
     ul {
         list-style: none;
     }
 
-    // Кнопки
     button {
         background-color: unset;
         border: none;
         cursor: pointer;
         padding: 0;
+        //font-size: 1.3rem;
+        font-size: clamp(1rem, 1.2rem, 2rem);
     }
 
-    // Общие стили для текстовых элементов
     h1, h2, h3, h4, h5, h6, p {
         margin: 0;
         font-weight: normal;
         line-height: 1.2;
     }
 
-    // Адаптивные заголовки
     h1 {
         font-size: 2.5rem;
 
@@ -84,7 +78,6 @@ export const GlobalStyle = createGlobalStyle`
         }
     }
 
-    // Формы
     input, textarea, select {
         font-family: inherit;
         font-size: inherit;
@@ -96,5 +89,26 @@ export const GlobalStyle = createGlobalStyle`
             outline: 2px solid ${theme.colors.accent};
         }
     }
-    
+
+    /* width */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: rgb(255, 255, 255);
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #00fff7;
+        border-radius: 8px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 255, 247, 0.78);
+        cursor: pointer;
+    }
 `;

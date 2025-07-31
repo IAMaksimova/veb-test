@@ -18,24 +18,17 @@ export const DesktopMenu: React.FC<{ menuItems: MenuItem[]} & ScrollToSec> = ({m
 };
 
 const SDesktopMenu = styled.nav`
-    
-    ul {
-        display: flex;
-        gap: 5vw;
-        font-size: 20px;
-        font-weight: 500;
+    @media ${theme.media.tablet} {
+        display: none;
     }
-    
-    ${ListItem}{
+
+    ${ListItem} {
         position: relative;
         padding: 10px 0;
         cursor: pointer;
         transition: all 0.3s ease;
 
-        &:hover {
-            color: ${theme.colors.accent};
-
-           
-        }
+    
     }
+
 `

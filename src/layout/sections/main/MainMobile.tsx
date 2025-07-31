@@ -3,8 +3,7 @@ import type {ScrollToSec} from "../../../App.tsx";
 import vebChemodan from "../../../assets/images/veb-chemodan.png";
 import styled from "styled-components";
 import {theme} from "../../../styles/Theme.ts";
-
-
+import {MainButton} from "../../../components/MainButton.tsx";
 
 export const MainMobile: React.FC<ScrollToSec> = ({ scrollToSection }) => {
     return (
@@ -31,9 +30,9 @@ export const MainMobile: React.FC<ScrollToSec> = ({ scrollToSection }) => {
                             <strong>вы — создаёте будущее</strong>
                         </Slogan>
 
-                        <MobileButton onClick={() => scrollToSection('application')}>
+                        <MainButton onClick={() => scrollToSection('application')}>
                             ПОДАТЬ ЗАЯВКУ
-                        </MobileButton>
+                        </MainButton>
                     </TextColumn>
                 </ContentGrid>
             </Container>
@@ -41,43 +40,69 @@ export const MainMobile: React.FC<ScrollToSec> = ({ scrollToSection }) => {
     );
 };
 export const MainSmallText = styled.p`
-  font-size: 3vh;
-  font-weight: 500;
-  text-align: left;
+    font-size: ${theme.fontsize_text.laptop};
+    font-weight: 500;
+    text-align: left;
+
+    @media ${theme.media.tablet} {
+        font-size: 13px;
+    }
+
+ 
 `;
-// Стили
 const SMainMobile = styled.section`
     min-height: 100vh;
-    padding: 32px 0;
+    padding: 40px 0;
     background: ${theme.colors.fontDark};
     display: flex;
     align-items: center;
+
+    @media (min-width: 577px) and (max-width: 768px) {
+        padding: 60px 0;
+    }
 `;
 
 const Container = styled.div`
     width: 100%;
-    padding: 0 24px;
+    padding: 0 32px;
+
+    @media (min-width: 577px) and (max-width: 768px) {
+        padding: 0 48px;
+    }
 `;
 
 const ContentGrid = styled.div`
     display: grid;
     grid-template-rows: auto 1fr;
-    gap: 40px;
-    max-width: 400px;
+    gap: 48px;
+    max-width: 500px;
     margin: 0 auto;
+
+    @media (min-width: 577px) and (max-width: 768px) {
+        max-width: 600px;
+        gap: 56px;
+    }
 `;
 
 const ImageColumn = styled.div`
     display: flex;
     justify-content: center;
+
+    @media (min-width: 577px) and (max-width: 768px) {
+        margin-bottom: 20px;
+    }
 `;
 
 const Suitcase = styled.img`
     width: 100%;
-    max-width: 290px;
+    max-width: 320px;
     height: auto;
     object-fit: contain;
     filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.3));
+
+    @media (min-width: 577px) and (max-width: 768px) {
+        max-width: 360px;
+    }
 `;
 
 const TextColumn = styled.div`
@@ -88,11 +113,16 @@ const TextColumn = styled.div`
 `;
 
 const Heading = styled.h1`
-    font-size: clamp(32px, 8vw, 40px);
+    font-size: clamp(32px, 6vw, 42px);
     font-weight: 600;
     line-height: 1.2;
     color: white;
-    margin: 0 0 16px 0;
+    margin: 0 0 20px 0;
+
+    @media (min-width: 577px) and (max-width: 768px) {
+        font-size: clamp(36px, 5vw, 44px);
+        margin-bottom: 24px;
+    }
 `;
 
 const Accent = styled.span`
@@ -100,38 +130,31 @@ const Accent = styled.span`
 `;
 
 const Divider = styled.div`
-    width: 64px;
-    height: 3px;
+    width: 80px;
+    height: 4px;
     background: ${theme.colors.accent};
-    margin: 0 auto 24px auto;
+    margin: 0 auto 28px auto;
+
+    @media (min-width: 577px) and (max-width: 768px) {
+        width: 100px;
+        margin-bottom: 32px;
+    }
 `;
 
 const Slogan = styled.p`
-    font-size: clamp(16px, 4vw, 18px);
+    font-size: clamp(16px, 3.5vw, 20px);
     line-height: 1.5;
     color: rgba(255, 255, 255, 0.9);
-    margin: 0 0 32px 0;
+    margin: 0 0 36px 0;
 
     strong {
         color: white;
         font-weight: 500;
     }
-`;
 
-const MobileButton = styled.button`
-    background: white;
-    color: ${theme.colors.font};
-    padding: 12px 30px;
-    border-radius: 5vw;
-    font-size: 16px;
-    font-weight: 500;
-    margin-top: 20px;
-    transition: all 0.3s ease;
-    width: 75vw;
-    height: 7vh;
-
-    &:hover {
-        background: ${theme.colors.accent};
-        transform: translateY(-2px);
+    @media (min-width: 577px) and (max-width: 768px) {
+        font-size: clamp(18px, 3vw, 22px);
+        margin-bottom: 40px;
     }
 `;
+
