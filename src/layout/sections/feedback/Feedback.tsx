@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Container } from "../../../components/Container.ts";
-import { SectionTitle } from "../challenge/Challenge.tsx";
+
 import { theme } from "../../../styles/Theme.ts";
 import { FlexWrapper } from "../../../components/FlexWrapper.ts";
 import ava1 from '../../../assets/avatars/vova-borodin-2.jpeg';
@@ -9,7 +9,8 @@ import ava3 from '../../../assets/avatars/egor-yakimov.jpg'
 import decor from '../../../assets/images/design-elements/abstract11g.png'
 import decor1 from '../../../assets/images/design-elements/abstract21g.png'
 import { Slider } from "./Slider.tsx";
-import {useState} from "react";
+import React, {useState} from "react";
+import {SectionTitle} from "../../../components/SectionTitle.tsx";
 
 export type Review = {
     id: number
@@ -18,6 +19,7 @@ export type Review = {
     preview: string
     text: string
     role: string
+    isActive?: boolean
 }
 
 const reviewsData: Review[] = [
@@ -47,7 +49,47 @@ const reviewsData: Review[] = [
     },
 
 ]
+const SMobileTestimonials = styled.div`
+  position: relative;
+  width: 100%;
+  padding: 30px 0;
 
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    background-size: contain;
+    background-repeat: no-repeat;
+    pointer-events: none;
+  }
+
+  /* Левый верхний элемент */
+  &::before {
+    background-image: url(${decor});
+    top: 10px;
+    left: 10px;
+    width: 60px;
+    height: 70px;
+    transform: rotate(-15deg);
+  }
+
+  /* Правый нижний элемент */
+  &::after {
+    background-image: url(${decor1});
+    bottom: 10px;
+    right: 10px;
+    width: 60px;
+    height: 80px;
+    transform: rotate(-15deg);
+  }
+
+  @media (max-width: 480px) {
+    &::before, &::after {
+      width: 60px;
+      height: 70px;
+    }
+  }
+`;
 // Компонент мобильных отзывов
 const MobileTestimonials = () => {
     const [selectedReview, setSelectedReview] = useState<typeof reviewsData[0] | null>(null);
@@ -65,7 +107,7 @@ const MobileTestimonials = () => {
     };
 
     return (
-        <>
+        <SMobileTestimonials>
             <TestimonialsContainer>
                 <TestimonialsTrack>
                     {reviewsData.map(review => (
@@ -104,7 +146,7 @@ const MobileTestimonials = () => {
                     </ModalContent>
                 </ModalOverlay>
             )}
-        </>
+        </SMobileTestimonials>
     );
 }
 export const CrossIcon: React.FC = () => (
@@ -136,18 +178,18 @@ const StyledSvg = styled.svg`
 // Основной компонент Feedback
 export const Feedback = () => {
     return (
-        <SFeedback id={'feedback'}>
-
-
+        <SFeedback id="feedback">
             <Container>
-                {/* Десктопная версия (слайдер) */}
+                {/* Десктопная версия */}
                 <FlexWrapperDesktop>
                     <TextContentDesktop>
                         <FeedbackTitle>Истории практикантов</FeedbackTitle>
-                        <FeedbackSubtitle>Молодые сотрудники и практиканты ВЭБ.РФ делятся своим опытом прохождения практики в госкорпорации</FeedbackSubtitle>
+                        <FeedbackSubtitle>
+                            Молодые сотрудники и практиканты ВЭБ.РФ делятся своим опытом
+                        </FeedbackSubtitle>
                     </TextContentDesktop>
                     <SliderDesktop>
-                        <Slider reviews={reviewsData} autoPlayInterval={10000}/>
+                        <Slider reviews={reviewsData} autoPlayInterval={10000} />
                     </SliderDesktop>
                 </FlexWrapperDesktop>
 
@@ -155,7 +197,9 @@ export const Feedback = () => {
                 <MobileVersion>
                     <MobileHeader>
                         <FeedbackTitle>Истории практикантов</FeedbackTitle>
-                        <FeedbackSubtitle>Молодые сотрудники и практиканты ВЭБ.РФ делятся своим опытом прохождения практики в госкорпорации</FeedbackSubtitle>
+                        <FeedbackSubtitle>
+                            Молодые сотрудники и практиканты ВЭБ.РФ делятся своим опытом
+                        </FeedbackSubtitle>
                     </MobileHeader>
                     <MobileTestimonials />
                 </MobileVersion>
@@ -167,34 +211,68 @@ export const Feedback = () => {
 // Стили для мобильных отзывов
 const TestimonialsContainer = styled.div`
     width: 100%;
-    overflow-x: auto;
-    padding: 10px 15px 20px;
-    -webkit-overflow-scrolling: touch;
+    padding: 30px 0;
+    position: relative;
+    margin: 0 auto;
+    max-width: 95%;
 
-    &::-webkit-scrollbar {
-        height: 4px;
+    &::before, &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 40px;
+        z-index: 2;
+        pointer-events: none;
     }
 
-    &::-webkit-scrollbar-thumb {
-        background: ${theme.colors.accent};
-        border-radius: 2px;
+    &::before {
+        left: 0;
+        background: linear-gradient(90deg, ${theme.colors.primaryBg}, transparent);
+    }
+
+    &::after {
+        right: 0;
+        background: linear-gradient(90deg, transparent, ${theme.colors.primaryBg});
     }
 `;
 
 const TestimonialsTrack = styled.div`
-    display: inline-flex;
-    gap: 15px;
-    padding: 5px;
+    display: flex;
+    gap: 20px;
+    padding: 10px 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 `;
 
 const TestimonialCard = styled.div`
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    min-width: 260px;
-    width: 260px;
-    flex-shrink: 0;
+    flex: 0 0 auto;
+    width: 280px;
+    scroll-snap-align: start;
+    background: rgba(0, 255, 247, 0.07);
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    z-index: 3; /* Чтобы карточки были поверх декоративных элементов */
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    @media ${theme.media.mobile} {
+        width: 85%;
+        padding: 20px;
+        margin: 0 10px;
+    }
 `;
 
 const Text = styled.p`
@@ -242,11 +320,13 @@ const Username = styled.span`
     opacity: 0.7;
 `;
 
-// Остальные стили остаются без изменений
 const MobileVersion = styled.div`
     display: none;
-    
-    @media ${theme.media.tablet} {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 5vw;
+
+    @media (max-width: 1300px) {
         display: block;
     }
 `;
@@ -258,7 +338,14 @@ const MobileHeader = styled.div`
 `;
 
 const FlexWrapperDesktop = styled(FlexWrapper)`
-    @media ${theme.media.tablet} {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 5vw;
+
+    @media (max-width: 1300px) {
         display: none;
     }
 `;
@@ -269,107 +356,47 @@ const TextContentDesktop = styled.div`
 `;
 
 const SliderDesktop = styled.div`
-    width: 60%;
-    padding-right: 5vw;
+    width: 64%;
+    padding-right: 4vw;
+  
 `;
 
 const SFeedback = styled.section`
-    height: 72vh;
-    color: ${theme.colors.font};
     position: relative;
+    padding: clamp(60px, 8vh, 120px) 0;
+    background: ${theme.colors.primaryBg};
+    overflow: hidden;
     
-    
-    &:before, &:after{
-        content: '';
-        background-image: url(${decor});
-        background-size: contain;
-        background-repeat: no-repeat;
-        position: absolute;
-        z-index: 5;
-        right: 13%;
-        top: -7%;
-        width: 7vw;
-        min-width: 70px;
-        max-width: 110px;
-        height: 14vh;
-        rotate: -15deg;
-
-        @media ${theme.media.mobile} {
+    @media (max-width: 1300px) {
+        &::before, &::after {
             display: none;
         }
     }
-    
-    &:after{
-        content: '';
-        background-image: url(${decor1});
-        background-size: contain;
-        background-repeat: no-repeat;
-        position: absolute;
-        z-index: 5;
-        top: 82%;
-        right: 48%;
-        width: 7vw;
-        min-width: 70px;
-        max-width: 110px;
-        height: 17vh;
-        rotate: -15deg;
 
-        @media ${theme.media.mobile} {
-            display: none;
-        }
-    }
-    
-    
-    
-
-    @media ${theme.media.tablet} {
-        height: auto;
-        padding: 60px 0;
-    }
-
-    @media ${theme.media.mobile} {
-        padding: 40px 0;
+    @media ${theme.media.tablet}, ${theme.media.laptop} {
+        padding: 10px 0;
+        
     }
 `;
 
 const FeedbackTitle = styled(SectionTitle)`
-    color: ${theme.colors.font};
-    font-size: 10vh;
-    line-height: 1.1;
+    color: ${theme.colors.fontDark};
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.2;
     margin-bottom: 20px;
-
-    @media (max-width: 1200px) {
-        font-size: 8vh;
-    }
-
-    @media ${theme.media.tablet} {
-        font-size: 4vh;
-        padding-left: 0;
-    }
-
-    @media ${theme.media.mobile} {
-        font-size: 24px;
-        margin-bottom: 10px;
-    }
+    font-weight: 500;
 `;
 
 const FeedbackSubtitle = styled.p`
     color: rgba(8, 96, 89, 0.82);
-    font-size: 3.5vh;
-    font-family: 'Bad Script', 'sans-serif';
-
-    @media (max-width: 1200px) {
-        font-size: 2.5vh;
-    }
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    font-family: 'Bad Script', sans-serif;
+    line-height: 1.4;
+    max-width: 90%;
 
     @media ${theme.media.tablet} {
-        font-size: 1.4vh;
         max-width: 100%;
-        padding-left: 0;
-    }
-
-    @media ${theme.media.mobile} {
-        font-size: 1.5vh;
+        margin: 0 auto;
     }
 `;
 
@@ -380,44 +407,55 @@ const ModalOverlay = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.8);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
     padding: 20px;
+    backdrop-filter: blur(5px);
 `;
 
 const ModalContent = styled.div`
     background: white;
     border-radius: 20px;
-    padding: 30px;
+    padding: 40px;
     width: 100%;
-    max-width: 500px;
-    max-height: 80vh;
+    max-width: 600px;
+    max-height: 90vh;
     overflow-y: auto;
     position: relative;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease;
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media ${theme.media.mobile} {
+        padding: 30px 20px;
+        max-height: 85vh;
+    }
 `;
 
 const CloseButton = styled.button`
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 20px;
+    right: 20px;
     background: none;
     border: none;
     cursor: pointer;
     padding: 5px;
-    
-    svg {
-        width: 20px;
-        height: 20px;
-        color: ${theme.colors.font};
-        transition: color 0.2s;
+    transition: transform 0.2s ease;
+
+    &:hover {
+        transform: rotate(90deg);
     }
-    
-    &:hover svg {
-        color: ${theme.colors.accent};
+
+    @media ${theme.media.mobile} {
+        top: 15px;
+        right: 15px;
     }
 `;
 

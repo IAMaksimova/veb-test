@@ -233,7 +233,7 @@ type OrderProps =  {
 const Label = styled.label`
     display: block;
     margin-bottom: 8px;
-    font-size: 12px;
+    font-size: ${theme.fontsize_text.mobile};
     color: #4a5568;
     font-weight: 500;
 `;

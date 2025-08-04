@@ -5,6 +5,7 @@ import triangle from '../../../assets/images/design-elements/abstract40g.png';
 import circle from '../../../assets/images/design-elements/abstract15g.png';
 import pattern from '../../../assets/images/patterns/pattern-tiff.png';
 import {MainSmallText} from "../main/MainMobile.tsx";
+import {SectionTitle} from "../../../components/SectionTitle.tsx";
 
 type ElementSize = {
     height?: string
@@ -51,10 +52,10 @@ export const Challenge = () => {
 };
 
 const SChallenge = styled.section`
-    min-height: 102vh;
+    min-height: fit-content;
     background-color: #323E48;
     color: white;
-
+    padding: 6vw 0 6vw 6vw;
     position: relative;
     overflow-x: hidden;
 
@@ -85,7 +86,7 @@ const SChallenge = styled.section`
             width: 7vw;
             min-width: 70px;
             max-width: 110px;
-            height: 14vh;
+           
         }
 
    
@@ -153,39 +154,6 @@ const TextWrapper = styled.div`
     }
 `;
 
-export const SectionTitle = styled.h2`
-    color: #07CEB8;
-    font-weight: 500;
-    font-size: ${theme.fontsize_title.laptop};
-    min-width: 100%;
-    line-height: 1.2;
-    margin-bottom: 2vh;
-
-    u {
-        text-decoration: none;
-        position: relative;
-
-        &:after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: #07CEB8;
-        }
-    }
-
-    @media ${theme.media.tablet}, ${theme.media.laptop} {
-        font-size: ${theme.fontsize_title.tablet};
-        margin-bottom: 15px;
-    }
-
-    @media ${theme.media.mobile} {
-        font-size: ${theme.fontsize_title.mobile};
-    }
-`;
-
 const ChallengeText = styled(MainSmallText)`
     font-weight: 400;
     width: 60vw;
@@ -196,10 +164,7 @@ const ChallengeText = styled(MainSmallText)`
         width: 100%;
         font-size: ${theme.fontsize_text.tablet};
     }
-
-    @media ${theme.media.mobile} {
-        font-size: ${theme.fontsize_text.mobile};
-    }
+    
 `;
 
 const CardsWrapper = styled.div`

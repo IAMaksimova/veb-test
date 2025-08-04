@@ -18,7 +18,7 @@ export const theme = {
     fontsize_title: {
         mobile_small: "(max-width: 376px)",
         mobile_medium: "(max-width: 391px)",
-        mobile: "(max-width: 576px)",
+        mobile: "1.8rem",
         tablet: "2rem",
         laptop: "2.8rem",
     },

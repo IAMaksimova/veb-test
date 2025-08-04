@@ -5,6 +5,8 @@ import {FlexWrapper} from "../../../components/FlexWrapper.ts";
 import React, {useState} from "react";
 import type {IsMobile, ScrollToSec} from "../../../App.tsx";
 import {type Direction, directions} from "./Diresctions_Data.ts";
+import {SectionTitle} from "../../../components/SectionTitle.tsx";
+
 
 
 export const Directions: React.FC<ScrollToSec & IsMobile> = ({scrollToSection}) => {
@@ -41,18 +43,16 @@ export const Directions: React.FC<ScrollToSec & IsMobile> = ({scrollToSection}) 
             <Container>
                 <FlexWrapper wrap={'wrap'} direction={'column'} align={'flex-start'}>
                     <DirectionsHeader>
-                        <DirectionsTitle>Блоки и компетенции</DirectionsTitle>
+                        <SectionTitle>Блоки и компетенции</SectionTitle>
                         <DirectionsSubtitle>Направления профессионального развития в ВЭБ.РФ</DirectionsSubtitle>
                     </DirectionsHeader>
 
-                    <FlexWrapper wrap={'wrap'} justify={'center'} gap={'15px'} style={{width: '86vw'}}>
+                    <FlexWrapper wrap={'wrap'} justify={'center'} gap={'clamp(8px, 1.1vw, 20px)'} >
                         {directions.map((direction) => {
                             return (
                                     <DirectionItem key={direction.id} onClick={() => handleDirectionClick(direction)}>
                                         {direction.name}
                                     </DirectionItem>
-
-
                             );
                         })}
                     </FlexWrapper>
@@ -115,25 +115,15 @@ const Marker = styled.span`
 `;
 
 const SDirectons = styled.section`
-    height: 90vh;
+    height: fit-content;
     background: ${theme.colors.font};
     width: 100%;
-  
+    padding: 6vh 6vw;
 
     @media ${theme.media.mobile}, ${theme.media.tablet} {
-        padding-left: 0;
-        padding-top: 3vh;
-        height: 82vh;
+        padding: 1vh 4vw;
     }
 
-    @media ${theme.media.mobile_medium} {
-        height: 86vh;
-        font-size: 11px;
-    }
-    @media ${theme.media.mobile_small} {
-        height: 102vh;
-        font-size: 10px;
-    }
 }`;
 
 const DirectionsHeader = styled.div`
@@ -148,18 +138,18 @@ const DirectionsHeader = styled.div`
     }
 `;
 
-const DirectionsTitle = styled.h2`
-    color: #07CEB8;
-    font-weight: 500;
-    font-size: 5vh;
-    text-align: left;
-
-    @media ${theme.media.mobile}, ${theme.media.tablet}{
-        font-size: 24px;;
-        margin-bottom: 1vh;
-    }
-
-`;
+// const DirectionsTitle = styled.h2`
+//     color: #07CEB8;
+//     font-weight: 500;
+//     font-size: 5vh;
+//     text-align: left;
+//
+//     @media ${theme.media.mobile}, ${theme.media.tablet}{
+//         font-size: 24px;;
+//         margin-bottom: 1vh;
+//     }
+//
+// `;
 
 const DirectionsSubtitle = styled.h3`
     color: rgba(193, 193, 193, 0.49);
@@ -173,51 +163,51 @@ const DirectionsSubtitle = styled.h3`
 `;
 
 const DirectionItem = styled.div`
+    /* Базовые стили */
     background-color: #07CEB8;
     color: ${theme.colors.font};
     border-radius: 50px;
-    padding: 20px 30px;
-    font-size: ${theme.fontsize_text.tablet};
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    display: flex;
+    transition: all 0.3s ease;
+    display: inline-flex; /* Изменено на inline-flex */
     align-items: center;
-    
-    
+    justify-content: center;
+    text-align: center;
+
+    /* Пропорциональное масштабирование */
+    padding: calc(0.5em + 0.8vw) calc(1em + 1vw); /* Относительно font-size */
+    font-size: clamp(14px, 1.6vw, 18px);
+
+    /* Сохраняем соотношение */
+    min-width: max-content;
+
     &:hover {
         background-color: #05a998;
+        transform: translateY(-1px);
     }
-    
-    @media ${theme.media.tablet}{
-        padding: 8px 15px;
-        font-size: ${theme.fontsize_text.mobile};
-    }
-    
-    @media ${theme.media.mobile} {
-        font-size: ${theme.fontsize_text.mobile};
-    }
-    
-    
-`;
 
-// const DirectionItemMobile  = styled.div`
-//     display: flex;
-//     align-items: center;
-//     padding: 8px 15px;
-//     background: #07CEB8;
-//     transition: all 0.3s ease;
-//     border-radius: 50px;
-//
-//     &:before {
-//         content: "→";
-//         color: #07CEB8;
-//         font-size: 12px;
-//     }
-//
-//     &:hover {
-//         background: rgba(7, 206, 184, 0.2);
-//     }
-// `;
+    &:active {
+        transform: translateY(1px);
+    }
+
+    /* Планшеты */
+    @media ${theme.media.tablet} {
+        font-size: clamp(14px, 1.8vw, 16px);
+        padding: calc(0.5em + 0.3vw) calc(0.8em + 0.8vw);
+    }
+
+    /* Мобильные устройства */
+    @media ${theme.media.mobile} {
+        font-size: clamp(14px, 2vw, 16px); /* Меньше зависимость от vw */
+        padding: calc(0.5em + 0.5vw) calc(0.8em + 1vw);
+
+        /* Отключаем фиксированные размеры */
+        min-height: 0;
+        width: auto;
+        max-width: none;
+        margin: initial;
+    }
+`;
 
 const ModalOverlay = styled.div<{ isClosing: boolean }>`
     position: fixed;

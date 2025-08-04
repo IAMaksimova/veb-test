@@ -1,56 +1,135 @@
-import {FlexWrapper} from "../../../components/FlexWrapper.ts";
+
 import styled from "styled-components";
 import type {Review} from "./Feedback.tsx";
-
 
 export const Slide = (props: Review) => {
     return (
         <SSlide>
-            <FlexWrapper wrap={'wrap'} justify={'space-between'} direction={'column'}>
+            <SlideContent>
+                <QuoteMark>“</QuoteMark>
 
-                <FlexWrapper wrap={'wrap'} style={{height: '80%'}}>
-                    <Avatar avatar={props.ava}/>
+                <TextWrapper>
                     <Text>{props.text}</Text>
-                </FlexWrapper>
+                </TextWrapper>
 
-                <FlexWrapper style={{height: '13%'}} direction={'column'}>
-                    <Name>{props.name}</Name>
-                    <Role>{props.role}</Role>
-                </FlexWrapper>
-
-            </FlexWrapper>
+                <AuthorSection>
+                    <Avatar avatar={props.ava} alt={props.name}/>
+                    <AuthorInfo>
+                        <Name>{props.name}</Name>
+                        <Role>{props.role}</Role>
+                    </AuthorInfo>
+                </AuthorSection>
+            </SlideContent>
         </SSlide>
     );
 };
 
-
 const SSlide = styled.div`
-    width: 35vw;
-    height: 65vh;
-    background: rgba(50, 62, 72, 0.11);
-    padding: 30px;
-`
+    width: 100%;
+    height: 90%;
+    background: rgba(0, 255, 247, 0.07);
+    border-radius: clamp(16px, 2vw, 24px);
+    padding: clamp(15px, 3vw, 40px);
+    box-sizing: border-box;
+    display: flex;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+`;
 
-const Avatar = styled.img<{ avatar: string }>`
-    background-image: url(${props => props.avatar});
-    background-size: contain;
-    object-fit: cover;
-    background-repeat: no-repeat;
-    width: 6vw;
-    height: 6vw;
-    border-radius: 50%;
-    //margin: 20px 0 0 20px;
-`
+const SlideContent = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    gap: clamp(10px, 1.5vw, 20px);
+`;
+
+const QuoteMark = styled.span`
+    position: absolute;
+    top: clamp(-10px, -1vw, -5px);
+    left: clamp(5px, 1vw, 10px);
+    font-size: clamp(60px, 12vw, 120px);
+    line-height: 1;
+    color: rgba(8, 96, 89, 0.08);
+    font-family: 'Times New Roman', serif;
+    z-index: 1;
+`;
+
+const TextWrapper = styled.div`
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    padding: clamp(10px, 1.5vw, 20px) 0;
+    position: relative;
+    z-index: 2;
+`;
 
 const Text = styled.p`
-    margin: 20px 0;
-    line-height: 1.4;
-`
+    margin: 0;
+    line-height: clamp(1.5, 1.7vw, 1.7);
+    font-size: clamp(0.78rem, 1.4vw, 1rem);
+    color: #333;
+    hyphens: auto;
+    text-align: left;
+    letter-spacing: 0.02em;
+
+    @media (max-width: 768px) {
+        font-size: clamp(1rem, 3.5vw, 1.1rem);
+        line-height: 1.6;
+    }
+`;
+
+const AuthorSection = styled.div`
+    display: flex;
+    align-items: center;
+    gap: clamp(15px, 2vw, 25px);
+    margin-top: auto;
+    padding-top: clamp(15px, 2vw, 20px);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+`;
+
+const Avatar = styled.img<{ avatar: string }>`
+    width: clamp(50px, 7vw, 90px);
+    height: clamp(50px, 7vw, 90px);
+    border-radius: 50%;
+    object-fit: cover;
+    background-image: url(${props => props.avatar});
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+`;
+
+const AuthorInfo = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3px, 0.5vw, 6px);
+`;
 
 const Name = styled.span`
-    font-family: 'Bad Script';
-`
+    font-family: 'Bad Script', cursive;
+    font-size: clamp(1rem, 1.3vw, 1.2rem);
+    color: #086059;
+    font-weight: 500;
+    line-height: 1.2;
+
+    @media (max-width: 768px) {
+        font-size: clamp(1.1rem, 4vw, 1.4rem);
+    }
+`;
+
 const Role = styled.span`
-    color: rgba(128, 128, 128, 0.5);
-    font-size: 0.8rem;
-`
+    color: rgba(0, 0, 0, 0.65);
+    font-size: clamp(0.7rem, 1vw, 0.9rem);
+    font-style: italic;
+    letter-spacing: 0.03em;
+
+    @media (max-width: 768px) {
+        font-size: clamp(0.85rem, 3vw, 1rem);
+    }
+`;

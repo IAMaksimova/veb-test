@@ -58,9 +58,7 @@ const SHeader = styled.header`
         padding: 0 5vw;
     }
 
-    &:hover {
-        background-color: rgba(255, 255, 255, 0.91);
-    }
+
 `;
 
 const DesktopMenuWrapper = styled.div`

@@ -37,16 +37,15 @@ export const Partners = () => {
 
 
 const SPartners = styled.section`
-    height: 48vh;
+    height: fit-content;
     background-color: white;
     text-align: center;
-    padding: 8vh;
+    padding: 10vh;
     ${FlexWrapper}{
         height: 40%;
     }
     
     @media ${theme.media.mobile}{
-        height: 60vh;
         padding: 6vh;
         ${FlexWrapper}{
             height: 25%;

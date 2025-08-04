@@ -268,15 +268,20 @@ const BackgroundPattern = styled.div`
 
 const StudentImage = styled.img`
     position: absolute;
-    left: 7%;
+    left: clamp(5%, 2vw, 10%);
     bottom: 0;
-    height: 70%;
-    max-height: 60vh;
+    height: auto;
+    width: auto;
+    max-height: 58vh;
+    max-width: 28vw;
+    min-height: 300px;
     z-index: 1;
     filter: blur(0.6px) drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2)) sepia(0.3) brightness(0.95) hue-rotate(5deg) saturate(0.7);
-
-    @media ${theme.media.tablet}, ${theme.media.mobile} {
-        display: none;
+    transform: translateY(5%) scale(1);
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    
+    @media (max-width: 1024px) {
+        display: none
     }
 `;
 
@@ -284,8 +289,8 @@ const SApplication = styled.section`
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 130vh;
-    padding-top: 6vh;
+    min-height: fit-content;
+    padding: 6vh;
     position: relative;
     background-color: ${theme.colors.font};
     overflow: hidden;
@@ -319,6 +324,5 @@ const FormContainer = styled.div`
         padding: 20px 16px;
         margin: 16px;
         width: calc(100% - 32px);
-        //border-radius: 12px;
     }
 `;

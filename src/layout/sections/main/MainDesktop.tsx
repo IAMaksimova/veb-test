@@ -37,10 +37,10 @@ const SMain = styled.section`
     background: white;
     color: white;
     width: 100%;
-    padding-right: 6vw;
-
+    padding: 40px;
 
     @media ${theme.media.tablet} {
+        padding: 30px;
         transform: scale(0.85);
         transform-origin: top center;
         height: auto;
@@ -79,7 +79,7 @@ const MainImage = styled.img`
     transition: all 0.3s ease;
     
     @media ${theme.media.laptop}{
-        bottom: 13vh;
+        bottom: 20vh;
         right: -5vw;
     }
     @media ${theme.media.tablet} {
