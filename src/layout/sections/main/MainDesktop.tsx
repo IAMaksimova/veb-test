@@ -38,6 +38,8 @@ const SMain = styled.section`
     color: white;
     width: 100%;
     padding: 40px;
+    
+
 
     @media ${theme.media.tablet} {
         padding: 30px;
@@ -45,7 +47,7 @@ const SMain = styled.section`
         transform-origin: top center;
         height: auto;
         min-height: 100vh;
-   
+
     }
 
 
@@ -71,14 +73,14 @@ const MainFigure = styled.div`
 const MainImage = styled.img`
     width: clamp(280px, 44vw, 610px);
     height: auto;
-    aspect-ratio: 610/500; 
-    
+    aspect-ratio: 610/500;
+
     position: absolute;
-    right: max(-3vw, -60px); 
-    bottom: min(27vh, 50vh);
+    right: max(2vw, -60px);
+    bottom: min(20vh, 50vh);
     transition: all 0.3s ease;
-    
-    @media ${theme.media.laptop}{
+
+    @media ${theme.media.laptop} {
         bottom: 20vh;
         right: -5vw;
     }
@@ -90,7 +92,7 @@ const MainImage = styled.img`
         margin: 30px auto 0;
         display: block;
     }
-    
+
     @media (max-width: 480px) {
         width: 80vw;
         margin-top: 20px;
@@ -106,12 +108,12 @@ const MainLargeText = styled.h2`
     @media ${theme.media.laptop} {
         width: 60vw;
     }
-    
+
     @media ${theme.media.tablet} {
         font-size: ${theme.fontsize_title.tablet};
     }
-    
-    
+
+
 `;
 
 const MainTextWrap = styled.div`

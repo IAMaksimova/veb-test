@@ -48,7 +48,7 @@ export const Conditions: React.FC = () => {
         <SConditions id={'conditions'}>
             <Container>
                 <TitleWrapper>
-                    <SectionTitle style={{color: theme.colors.fontDark}}>
+                    <SectionTitle style={{color: theme.colors.fontDark, fontSize: "clamp(1.9rem, 4vw, 2.5rem)"}}>
                         Особенности программы
                     </SectionTitle>
                     <TitleUnderline />
@@ -78,12 +78,16 @@ export const Conditions: React.FC = () => {
 };
 
 const SConditions = styled.section`
-    padding: clamp(30px, 8vh, 100px) clamp(20px, 6vw, 15vw);
+    padding: clamp(30px, 10vh, 100px) clamp(20px, 6vw, 15vw);
     position: relative;
     background-color: ${theme.colors.primaryBg};
     
+    @media ${theme.media.laptop} {
+        
+    }
+    
     @media ${theme.media.mobile}{
-        padding: clamp(30px, 3vh, 100px) clamp(20px, 6vw, 15vw);
+        padding: clamp(30px, 8vh, 100px) clamp(20px, 6vw, 15vw);
     }
 `;
 

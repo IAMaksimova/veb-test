@@ -236,6 +236,10 @@ const Label = styled.label`
     font-size: ${theme.fontsize_text.mobile};
     color: #4a5568;
     font-weight: 500;
+    
+    @media ${theme.media.mobile}{
+        font-size: ${theme.fontsize_text.tablet};
+    }
 `;
 
 const FileInputContainer = styled.div`
@@ -329,7 +333,7 @@ const InputField = styled.input`
 
     @media ${theme.media.mobile} {
         padding: 10px 14px;
-        font-size: 13px; // Увеличиваем для удобства ввода на мобильных
+        font-size: ${theme.fontsize_text.tablet};
     }
 `;
 
@@ -361,7 +365,7 @@ const SelectField = styled.select`
 
     @media ${theme.media.mobile} {
         padding: 10px 14px;
-        font-size: 13px;
+        font-size: ${theme.fontsize_text.tablet};
 
     }
 `;

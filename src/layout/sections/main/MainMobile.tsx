@@ -95,7 +95,7 @@ const ImageColumn = styled.div`
 
 const Suitcase = styled.img`
     width: 100%;
-    max-width: 320px;
+    max-width: 260px;
     height: auto;
     object-fit: contain;
     filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.3));

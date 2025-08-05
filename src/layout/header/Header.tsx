@@ -45,8 +45,8 @@ export const Header: React.FC<ScrollToSec> = ({ scrollToSection }) => {
 
 const SHeader = styled.header`
     width: 100%;
-    height: 10vh;
-    padding: 0 7vw;
+    height: auto;
+    padding: 1vh 7vw;
     top: 0;
     z-index: 15;
     position: fixed;

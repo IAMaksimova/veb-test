@@ -35,17 +35,7 @@ export const Icon: React.FC<IconPropsType> = ({
 const StyledIcon = styled.svg<{ $hoverColor?: string }>`
   transition: all 0.3s ease;
   cursor: pointer;
-  
-  &:hover {
-    transform: scale(1.1);
-    filter: drop-shadow(0 0 5px ${props => props.$hoverColor || 'rgba(255, 255, 255, 0.7)'});
     
-    & use {
-      fill: ${props => props.$hoverColor || '#ffffff'};
-    }
-  }
 
-  & use {
-    transition: fill 0.3s ease;
-  }
+
 `;

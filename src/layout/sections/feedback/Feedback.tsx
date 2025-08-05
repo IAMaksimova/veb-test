@@ -381,7 +381,7 @@ const SFeedback = styled.section`
 
 const FeedbackTitle = styled(SectionTitle)`
     color: ${theme.colors.fontDark};
-    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-size: clamp(2rem, 4.2vw, 3.5rem);
     line-height: 1.2;
     margin-bottom: 20px;
     font-weight: 500;

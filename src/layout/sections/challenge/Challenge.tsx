@@ -133,6 +133,8 @@ const SChallenge = styled.section`
     
     @media ${theme.media.laptop}{
         padding-bottom: 0;
+        overflow-y: hidden;
+        padding-top: 7vw;
     }
     
 
@@ -141,6 +143,10 @@ const SChallenge = styled.section`
         min-height: auto;
         padding: 40px 20px;
         
+    }
+    
+    @media ${theme.media.mobile}{
+        padding-top: 8vh;
     }
     
 `;
@@ -157,7 +163,7 @@ const TextWrapper = styled.div`
 const ChallengeText = styled(MainSmallText)`
     font-weight: 400;
     width: 60vw;
-    font-size: clamp(16px, 3vh, 22px);
+    font-size: clamp(16px, 3vh, 21px);
     line-height: 1.5;
 
     @media ${theme.media.tablet} {
@@ -246,8 +252,10 @@ const ChallengeElement = styled.div<ElementSize & {accent?: boolean}>`
     }
 
     @media ${theme.media.laptop} {
-        font-size: calc(1rem - 0.3vh);
+        //font-size: calc(1rem - 0.3vh);
+        font-size: ${theme.fontsize_text.tablet};
         padding: 20px;
+        height: calc(${props => props.height || 'auto'} - 4vh - 4vw);
     }
     @media ${theme.media.tablet} {
         padding: 20px;

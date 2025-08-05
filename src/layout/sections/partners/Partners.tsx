@@ -58,7 +58,7 @@ const SPartners = styled.section`
 const Title = styled.h2`
     color: ${theme.colors.font};
     font-weight: 600;
-    font-size: 4vh;
+    font-size: clamp(2rem, 5vw, 2.5rem);
     margin-bottom: 1.5vh;
     text-align: center;
     line-height: 1.2;
@@ -129,4 +129,9 @@ const PartnerLogo = styled.img`
     opacity: 1;
     transform: scale(1.05);
   }
+    
+    @media ${theme.media.laptop} {
+        max-height: 10vh;
+        
+    }
 `

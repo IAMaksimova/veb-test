@@ -22,7 +22,7 @@ const SFormHeader = styled.div`
 `
 
 const FormTitle = styled.h2`
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 600;
     color: #2d3748;
     margin-bottom: 8px;

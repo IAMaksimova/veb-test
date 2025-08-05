@@ -1,4 +1,3 @@
-
 import styled from "styled-components";
 import type {Review} from "./Feedback.tsx";
 
@@ -13,7 +12,7 @@ export const Slide = (props: Review) => {
                 </TextWrapper>
 
                 <AuthorSection>
-                    <Avatar avatar={props.ava} alt={props.name}/>
+                    <Avatar avatar={props.ava}/>
                     <AuthorInfo>
                         <Name>{props.name}</Name>
                         <Role>{props.role}</Role>
@@ -92,19 +91,23 @@ const AuthorSection = styled.div`
     border-top: 1px solid rgba(0, 0, 0, 0.1);
 `;
 
-const Avatar = styled.img<{ avatar: string }>`
+
+
+const Avatar = styled.div<{ avatar: string }>`
     width: clamp(50px, 7vw, 90px);
-    height: clamp(50px, 7vw, 90px);
-    border-radius: 50%;
-    object-fit: cover;
+    height: clamp(50px, 7vw, 90px); /* Гарантируем одинаковую высоту и ширину */
+    border-radius: 50%; /* Делаем идеальный круг */
     background-image: url(${props => props.avatar});
     background-size: cover;
     background-position: center;
+    object-fit: cover; /* Для img */
+    aspect-ratio: 1/1; /* Сохраняем квадратные пропорции */
     transition: transform 0.3s ease;
     border: 2px solid rgba(255, 255, 255, 0.8);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-`;
 
+   
+`;
 const AuthorInfo = styled.div`
     display: flex;
     flex-direction: column;
