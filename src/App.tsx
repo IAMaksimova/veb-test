@@ -36,7 +36,7 @@ function App() {
         <>
             <Header scrollToSection={scrollToSection}/>
             <Main scrollToSection={scrollToSection} isMobile={isMobile}/>
-            <Challenge/>
+            <Challenge isMobile={isMobile}/>
             <Directions scrollToSection={scrollToSection} isMobile={isMobile}/>
             <Conditions/>
             <Feedback/>

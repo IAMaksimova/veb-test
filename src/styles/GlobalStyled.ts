@@ -111,4 +111,34 @@ export const GlobalStyle = createGlobalStyle`
         background: rgba(0, 255, 247, 0.78);
         cursor: pointer;
     }
+
+    ::selection {
+        background-color: rgba(7, 206, 184, 0.38); /* Бирюзовый фон */
+        color: white; /* Белый текст */
+        text-shadow: none; /* Убираем тень текста */
+    }
+
+    /* Для Firefox */
+    ::-moz-selection {
+        background-color: #07CEB8;
+        color: white;
+        text-shadow: none;
+    }
+
+    select {
+        /* Для Webkit браузеров (Chrome, Safari) */
+        margin-bottom: 0;
+    }
+
+    /* Создаем контейнер для контроля позиционирования */
+    .select-container {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+    }
+
+    /* Гарантируем, что список открывается вниз */
+    select:focus {
+        position: relative;
+    }
 `;

@@ -7,11 +7,13 @@ import mgimo from '../../../assets/uni-logos/mgimo.jpg'
 import mgtu from '../../../assets/uni-logos/mgtu.png'
 import msu from '../../../assets/uni-logos/msu.png'
 import ranh from '../../../assets/uni-logos/ranhigs.webp'
-import rpa from '../../../assets/uni-logos/rpa.gif'
+import rpa from '../../../assets/uni-logos/rpa.jpg'
 import rudn from '../../../assets/uni-logos/rudn.jpg'
 import vavt from '../../../assets/uni-logos/vavt.jpg'
+import rut from '../../../assets/uni-logos/rut.png'
+import reu from '../../../assets/uni-logos/reu.png'
 
-const logos = [fin, hse, mgtu, mgimo, msu, ranh, rpa, rudn, vavt]
+const logos = [fin, hse, mgtu, mgimo, msu, ranh, rpa, rudn, vavt, reu, rut]
 
 export const Partners = () => {
     return (
@@ -51,9 +53,7 @@ const SPartners = styled.section`
             height: 25%;
         }
     }
-    
 `
-
 
 const Title = styled.h2`
     color: ${theme.colors.font};
@@ -111,19 +111,14 @@ const LogoWrap = styled.div`
 `
 
 const PartnerLogo = styled.img`
-  height: auto;
-  max-height: 14vh;
-  width: auto;
-  max-width: 19vw;
+  max-height: 12vh;
+  max-width: 11vw;
   object-fit: contain;
-  padding: 1.5vh;
-  
-  /* Чёрно-белый фильтр */
+  padding: 1.4vh;
   filter: grayscale(100%);
   opacity: 0.8;
   transition: all 0.3s ease;
 
-  /* Эффекты при наведении */
   &:hover {
     filter: grayscale(0%);
     opacity: 1;

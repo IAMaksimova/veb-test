@@ -33,9 +33,6 @@ export const Icon: React.FC<IconPropsType> = ({
 };
 
 const StyledIcon = styled.svg<{ $hoverColor?: string }>`
-  transition: all 0.3s ease;
-  cursor: pointer;
-    
-
-
+    transition: all 0.3s ease;
+    cursor: pointer;
 `;

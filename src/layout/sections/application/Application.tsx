@@ -1,17 +1,14 @@
-import styled, {keyframes} from "styled-components";
+import {S} from './Application_Styles.ts'
 import {type FormEvent, useState} from "react";
-import {theme} from "../../../styles/Theme.ts";
-import student from "../../../assets/images/student.png";
+import student from "../../../assets/images/design-elements/student.png";
 import {ApplicationForm} from "./applicationForm/ApplicationForm.tsx";
-import {FormHeader} from "./applicationForm/FormHeader.tsx";
-import {collection, addDoc} from 'firebase/firestore';
-import {v4} from "uuid";
-import {FaCheckCircle, FaSpinner} from "react-icons/fa";
-import {db} from "../../../firebase.ts";
+import {FormHeader} from "./formHeader/FormHeader.tsx";
+import {ApplicationModal} from "./applicationModal/ApplicationModal.tsx";
+import {LoadingOverlay} from "./loadingOverlay/LoadingOverlay.tsx";
 
 export type FormState = {
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     patronymic: string;
     university: string;
     degree: string;
@@ -21,53 +18,93 @@ export type FormState = {
     email: string;
     resume: null | File;
     consent: boolean;
+    gender: 'мужской' | 'женский' | null;
+    city: string;
+    customUniversity: null | string
 }
 
 export const Application = () => {
     const [formData, setFormData] = useState<FormState>({
-        firstName: 'Валера',
-        lastName: 'Валеров',
-        patronymic: 'Валерьвич',
-        university: 'РУТ',
+        first_name: 'Валера',
+        last_name: 'Воронцов',
+        patronymic: 'Сергеевич',
+        university: 'МГТУ им.Баумана',
         degree: '',
         course: '',
-        specialty: 'Дальнобойщик',
-        phone: '79053699856',
-        email: 'valer@gmail.com',
+        specialty: 'Прикладная математика и информатика',
+        phone: '79633699669',
+        email: 'valera@luchshiy.com',
         resume: null,
-        consent: false
+        consent: false,
+        gender:  'мужской',
+        city: '',
+        customUniversity: null
+
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setErrorMessage('');
+
+        if (formData.university === 'Другое' && formData.customUniversity && !formData.customUniversity.trim()) {
+            alert('Пожалуйста, введите название вашего ВУЗа');
+            return;
+        }
+
+        if (!formData.consent) {
+            setErrorMessage('Необходимо согласие на обработку данных');
+            setIsSubmitting(false);
+            return;
+        }
+
+        if (!formData.resume) {
+            setErrorMessage('Файл резюме обязателен');
+            setIsSubmitting(false);
+            return;
+        }
 
         try {
-            await addDoc(collection(db, 'applications'), {
-                id: v4(),
-                fullName: `${formData.firstName} ${formData.lastName} ${formData.patronymic}`,
-                dateOfBirth: '25-10-2004',
-                university: formData.university,
-                degree: formData.degree,
-                course: Number(formData.course),
-                specialty: formData.specialty,
-                phone: formData.phone,
-                email: formData.email,
-                resume: formData.resume ? formData.resume.name : null,
-                consent: formData.consent,
-                hireDate: new Date(),
-                status: 'new'
+            const formDataToSend = new FormData();
+
+            formDataToSend.append('first_name', formData.first_name);
+            formDataToSend.append('last_name', formData.last_name);
+            formDataToSend.append('patronymic', formData.patronymic);
+            formDataToSend.append('university', formData.university);
+            formDataToSend.append('degree', formData.degree);
+            formDataToSend.append('course', formData.course);
+            formDataToSend.append('specialty', formData.specialty);
+            formDataToSend.append('phone', formData.phone);
+            formDataToSend.append('email', formData.email);
+            formDataToSend.append('consent', formData.consent.toString());
+
+            if (formData.resume) {
+                formDataToSend.append('resume', formData.resume);
+            }
+
+            const response = await fetch('http://localhost:5000/api/resumes', {
+                method: 'POST',
+                body: formDataToSend,
             });
 
-            setShowSuccessModal(true);
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText || `HTTP error! status: ${response.status}`);
+            }
+            const responseData = await response.json();
 
-            // Сброс формы после успешной отправки
+            if (!response.ok) {
+                throw new Error(responseData.error || `Ошибка сервера: ${response.status}`);
+            }
+
+            setShowSuccessModal(true);
             setFormData({
-                firstName: '',
-                lastName: '',
+                first_name: '',
+                last_name: '',
                 patronymic: '',
                 university: '',
                 degree: '',
@@ -77,10 +114,14 @@ export const Application = () => {
                 email: '',
                 resume: null,
                 consent: false,
+                gender: null,
+                city: '',
+                customUniversity: null
             });
+
         } catch (error) {
             console.error('Ошибка при отправке анкеты:', error);
-            alert('Произошла ошибка при отправке анкеты');
+            setErrorMessage(error instanceof Error ? error.message : 'Произошла ошибка при отправке анкеты');
         } finally {
             setIsSubmitting(false);
         }
@@ -91,238 +132,25 @@ export const Application = () => {
     };
 
     return (
-        <SApplication id={'application'}>
-            <BackgroundPattern/>
-            <FormContainer>
+        <S.Application id={'application'}>
+            <S.FormContainer>
                 <FormHeader title={'Анкета кандидата'} subtitle={'Практика в ВЭБ.РФ – ваш первый шаг в карьере'}/>
+
+                {errorMessage && (
+                    <S.ErrorMessage>
+                        {errorMessage}
+                    </S.ErrorMessage>
+                )}
+
                 <ApplicationForm
                     setFormData={setFormData}
                     formData={formData}
                     handleSubmit={handleSubmit}
                 />
-            </FormContainer>
-            <StudentImage src={student} alt="Студент"/>
-
-            {/* Модальное окно успешной отправки */}
-            {showSuccessModal && (
-                <SuccessModal onClick={closeSuccessModal}>
-                    <SuccessContent onClick={e => e.stopPropagation()}>
-                        <SuccessIcon>
-                            <FaCheckCircle/>
-                        </SuccessIcon>
-                        <SuccessTitle>Анкета отправлена!</SuccessTitle>
-                        <SuccessText>
-                            Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.
-                        </SuccessText>
-                        <CloseModalButton onClick={closeSuccessModal}>
-                            Закрыть
-                        </CloseModalButton>
-                    </SuccessContent>
-                </SuccessModal>
-            )}
-
-            {/* Индикатор загрузки */}
-            {isSubmitting && (
-                <LoadingOverlay>
-                    <LoadingSpinner>
-                        <FaSpinner/>
-                        <span>Отправка данных...</span>
-                    </LoadingSpinner>
-                </LoadingOverlay>
-            )}
-        </SApplication>
+            </S.FormContainer>
+            <S.StudentImage src={student} alt="Студент"/>
+            {showSuccessModal && <ApplicationModal closeSuccessModal={closeSuccessModal}/>}
+            {isSubmitting && <LoadingOverlay/>}
+        </S.Application>
     );
 };
-
-// Анимации
-const fadeIn = keyframes`
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-`;
-
-const spin = keyframes`
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-`;
-
-const scaleIn = keyframes`
-    from {
-        transform: scale(0.8);
-        opacity: 0;
-    }
-    to {
-        transform: scale(1);
-        opacity: 1;
-    }
-`;
-
-// Стили для новых компонентов
-const SuccessModal = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    animation: fadeIn 0.3s ease;
-`;
-
-const SuccessContent = styled.div`
-    background: white;
-    padding: 40px;
-    border-radius: 16px;
-    text-align: center;
-    max-width: 500px;
-    width: 90%;
-    animation: ${scaleIn} 0.3s ease;
-`;
-
-const SuccessIcon = styled.div`
-    font-size: 60px;
-    color: ${theme.colors.accent};
-    margin-bottom: 20px;
-`;
-
-const SuccessTitle = styled.h3`
-    font-size: 24px;
-    margin-bottom: 15px;
-
-`;
-
-const SuccessText = styled.p`
-    font-size: 16px;
-    margin-bottom: 25px;
-    line-height: 1.5;
-`;
-
-const CloseModalButton = styled.button`
-    background: ${theme.colors.accent};
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 30px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    
-    &:hover {
-        transform: translateY(-2px);
-    }
-`;
-
-const LoadingOverlay = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-`;
-
-const LoadingSpinner = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    
-    svg {
-        font-size: 40px;
-        color: ${theme.colors.accent};
-        animation: ${spin} 1s linear infinite;
-    }
-    
-    span {
-        font-size: 18px;
-    }
-`;
-
-// Остальные стили остаются без изменений
-const BackgroundPattern = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 20% 30%, rgba(7, 206, 184, 0.08) 0%, transparent 25%),
-    radial-gradient(circle at 80% 70%, rgba(7, 206, 184, 0.08) 0%, transparent 25%);
-    z-index: 0;
-`;
-
-const StudentImage = styled.img`
-    position: absolute;
-    left: clamp(5%, 2vw, 10%);
-    bottom: 0;
-    height: auto;
-    width: auto;
-    max-height: 58vh;
-    max-width: 28vw;
-    min-height: 300px;
-    z-index: 1;
-    filter: blur(0.6px) drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2)) sepia(0.3) brightness(0.95) hue-rotate(5deg) saturate(0.7);
-    transform: translateY(5%) scale(1);
-    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-    
-    @media (max-width: 1024px) {
-        display: none
-    }
-`;
-
-const SApplication = styled.section`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: fit-content;
-    padding: 6vh;
-    position: relative;
-    background-color: ${theme.colors.font};
-    overflow: hidden;
-
-    @media ${theme.media.mobile} {
-        min-height: auto;
-        padding: 20px 0;
-        align-items: flex-start;
-    }
-`;
-
-const FormContainer = styled.div`
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 40px;
-    border-radius: 16px;
-    background-color: #fff;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-    position: relative;
-    z-index: 1;
-    animation: ${fadeIn} 0.6s ease-out;
-
-    @media ${theme.media.tablet} {
-        padding: 30px;
-        margin: 20px;
-        width: calc(100% - 40px);
-    }
-
-    @media ${theme.media.mobile} {
-        padding: 20px 16px;
-        margin: 16px;
-        width: calc(100% - 32px);
-    }
-`;

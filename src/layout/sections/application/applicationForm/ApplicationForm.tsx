@@ -1,8 +1,9 @@
-import styled from "styled-components";
-import {theme} from "../../../../styles/Theme.ts";
+import {S} from './ApplicationForm_Styles.ts'
 import React, {type ChangeEvent} from "react";
 import type {FormState} from "../Application.tsx";
-import {FormFooter} from "./FormFooter.tsx";
+import {FormFooter} from "../formFooter/FormFooter.tsx";
+import data_processing from "../../../../../public/data_processing.pdf"
+
 
 export type ApplicationForm = {
     setFormData: (FormData: FormState) => void
@@ -15,16 +16,57 @@ export const ApplicationForm: React.FC<ApplicationForm> = ({setFormData, formDat
     const yearOptions = {
         '': ['Выберите курс'],
         'бакалавриат': ['1 курс', '2 курс', '3 курс', '4 курс', '5 курс', '6 курс'],
-        'магистратура': ['1 курс', '2 курс']
+        'магистратура': ['1 курс', '2 курс'],
+        'аспирантура': ['1 курс', '2 курс', '3 курс', '4 курс']
     };
+
+    const moscowUniversities = [
+        'МГУ', 'МГТУ', 'МФТИ', 'МИФИ', 'ВШЭ', 'РАНХиГС', 'МГИМО', 'РЭУ', 'МИСиС',
+        'МАИ', 'МЭИ', 'РУДН', 'МГМУ', 'РНИМУ', 'МГЮА', 'МАРХИ', 'ГУУ', 'ФУ', 'МПГУ',
+        'МТУСИ', 'МИРЭА', 'МГПУ', 'МГХПА', 'МГАХИ', 'ГИТИС', 'МГК', 'МГАУ', 'МГСУ'
+    ].sort();
+
+    const universitiesWithOther = [...moscowUniversities, 'Другое'];
+
+    const russianRegions = [
+        'Адыгея', 'Алтай', 'Алтайский край', 'Амурская область', 'Архангельская область',
+        'Астраханская область', 'Башкортостан', 'Белгородская область', 'Брянская область',
+        'Бурятия', 'Владимирская область', 'Волгоградская область', 'Вологодская область',
+        'Воронежская область', 'Дагестан', 'Еврейская АО', 'Забайкальский край',
+        'Ивановская область', 'Ингушетия', 'Иркутская область', 'Кабардино-Балкария',
+        'Калининградская область', 'Калмыкия', 'Калужская область', 'Камчатский край',
+        'Карачаево-Черкесия', 'Карелия', 'Кемеровская область', 'Кировская область',
+        'Коми', 'Костромская область', 'Краснодарский край', 'Красноярский край',
+        'Курганская область', 'Курская область', 'Ленинградская область', 'Липецкая область',
+        'Магаданская область', 'Марий Эл', 'Мордовия', 'Москва', 'Московская область',
+        'Мурманская область', 'Ненецкий АО', 'Нижегородская область', 'Новгородская область',
+        'Новосибирская область', 'Омская область', 'Оренбургская область', 'Орловская область',
+        'Пензенская область', 'Пермский край', 'Приморский край', 'Псковская область',
+        'Ростовская область', 'Рязанская область', 'Самарская область', 'Саратовская область',
+        'Саха (Якутия)', 'Сахалинская область', 'Свердловская область', 'Северная Осетия',
+        'Смоленская область', 'Ставропольский край', 'Тамбовская область', 'Татарстан',
+        'Тверская область', 'Томская область', 'Тульская область', 'Тыва', 'Тюменская область',
+        'Удмуртия', 'Ульяновская область', 'Хабаровский край', 'Хакасия', 'Ханты-Мансийский АО',
+        'Челябинская область', 'Чечня', 'Чувашия', 'Чукотский АО', 'Ямало-Ненецкий АО',
+        'Ярославская область'
+    ].sort();
+
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const {name, value} = e.target;
+
         if (name === 'degree') {
             setFormData({
                 ...formData,
                 degree: value,
                 course: ''
+            });
+        } else if (name === 'university') {
+            // Если выбрано "Другое", сбрасываем кастомный вуз
+            setFormData({
+                ...formData,
+                [name]: value,
+                customUniversity: value === 'Другое' ? '' : formData.customUniversity
             });
         } else {
             setFormData({...formData, [name]: value});
@@ -41,37 +83,42 @@ export const ApplicationForm: React.FC<ApplicationForm> = ({setFormData, formDat
     const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({...formData, consent: e.target.checked});
     };
+
+    const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value) {
+            setFormData({...formData, gender: e.target.value as 'мужской' | 'женский'});
+        }
+    };
     return (
         <>
-            <FormContainer onSubmit={handleSubmit}>
-                {/* Персональные данные */}
-                <FormGroup mobileOrder={1} desktopOrder={1}>
-                    <Label htmlFor="lastName">Фамилия*</Label>
-                    <InputField
+            <S.FormContainer onSubmit={handleSubmit}>
+                <S.FormGroup mobileOrder={1} desktopOrder={1}>
+                    <S.Label htmlFor="lastName">Фамилия*</S.Label>
+                    <S.InputField
                         type="text"
                         id="lastName"
-                        name="lastName"
-                        value={formData.lastName}
+                        name="last_name"
+                        value={formData.last_name}
                         onChange={handleChange}
                         required
                     />
-                </FormGroup>
+                </S.FormGroup>
 
-                <FormGroup mobileOrder={1} desktopOrder={2}>
-                    <Label htmlFor="firstName">Имя*</Label>
-                    <InputField
+                <S.FormGroup mobileOrder={1} desktopOrder={2}>
+                    <S.Label htmlFor="firstName">Имя*</S.Label>
+                    <S.InputField
                         type="text"
                         id="firstName"
-                        name="firstName"
-                        value={formData.firstName}
+                        name="first_name"
+                        value={formData.first_name}
                         onChange={handleChange}
                         required
                     />
-                </FormGroup>
+                </S.FormGroup>
 
-                <FormGroup mobileOrder={3} desktopOrder={3}>
-                    <Label htmlFor="patronymic">Отчество*</Label>
-                    <InputField
+                <S.FormGroup mobileOrder={3} desktopOrder={3}>
+                    <S.Label htmlFor="patronymic">Отчество*</S.Label>
+                    <S.InputField
                         type="text"
                         id="patronymic"
                         name="patronymic"
@@ -79,12 +126,11 @@ export const ApplicationForm: React.FC<ApplicationForm> = ({setFormData, formDat
                         onChange={handleChange}
                         required
                     />
-                </FormGroup>
+                </S.FormGroup>
 
-                {/* Контактные данные */}
-                <FormGroup mobileOrder={4} desktopOrder={6}>
-                    <Label htmlFor="phone">Телефон*</Label>
-                    <InputField
+                <S.FormGroup mobileOrder={4} desktopOrder={6}>
+                    <S.Label htmlFor="phone">Телефон*</S.Label>
+                    <S.InputField
                         type="tel"
                         id="phone"
                         name="phone"
@@ -92,11 +138,11 @@ export const ApplicationForm: React.FC<ApplicationForm> = ({setFormData, formDat
                         onChange={handleChange}
                         required
                     />
-                </FormGroup>
+                </S.FormGroup>
 
-                <FormGroup mobileOrder={5} desktopOrder={5}>
-                    <Label htmlFor="email">Email*</Label>
-                    <InputField
+                <S.FormGroup mobileOrder={5} desktopOrder={5}>
+                    <S.Label htmlFor="email">Email*</S.Label>
+                    <S.InputField
                         type="email"
                         id="email"
                         name="email"
@@ -104,23 +150,81 @@ export const ApplicationForm: React.FC<ApplicationForm> = ({setFormData, formDat
                         onChange={handleChange}
                         required
                     />
-                </FormGroup>
+                </S.FormGroup>
 
-                {/* Образовательные данные */}
-                <FormGroup mobileOrder={6} desktopOrder={4}>
-                    <Label htmlFor="university">ВУЗ*</Label>
-                    <InputField
-                        type="text"
+                <S.FormGroup mobileOrder={3} desktopOrder={4}>
+                    <S.Label>Пол*</S.Label>
+                    <S.RadioGroup>
+                        <S.RadioLabel>
+                            <S.RadioInput
+                                type="radio"
+                                name="gender"
+                                value="мужской"
+                                checked={formData.gender === 'мужской'}
+                                onChange={handleRadioChange}
+                                required
+                            />
+                            <S.RadioText>Мужской</S.RadioText>
+                        </S.RadioLabel>
+                        <S.RadioLabel>
+                            <S.RadioInput
+                                type="radio"
+                                name="gender"
+                                value="женский"
+                                checked={formData.gender === 'женский'}
+                                onChange={handleRadioChange}
+                                required
+                            />
+                            <S.RadioText>Женский</S.RadioText>
+                        </S.RadioLabel>
+                    </S.RadioGroup>
+                </S.FormGroup>
+
+                <S.FormGroup mobileOrder={3} desktopOrder={4}>
+                    <S.Label htmlFor="birthPlace">Место рождения*</S.Label>
+                    <S.SelectField
+                        id="city"
+                        name="city"
+                        value={formData.city}
+                        onChange={handleChange}
+                        required
+                    >
+                        <option value="">Выберите регион</option>
+                        {russianRegions.map((region) => (
+                            <option key={region} value={region}>{region}</option>
+                        ))}
+                    </S.SelectField>
+                </S.FormGroup>
+
+                <S.FormGroup mobileOrder={8} desktopOrder={6}>
+                    <S.Label htmlFor="university">ВУЗ*</S.Label>
+                    <S.SelectField
                         id="university"
                         name="university"
                         value={formData.university}
                         onChange={handleChange}
                         required
-                    />
-                </FormGroup>
-                <FormGroup mobileOrder={8} desktopOrder={8}>
-                    <Label htmlFor="course">Курс*</Label>
-                    <SelectField
+                    >
+                        <option value="">Выберите ВУЗ</option>
+                        {universitiesWithOther.map((university) => (
+                            <option key={university} value={university}>{university}</option>
+                        ))}
+                    </S.SelectField>
+
+                    {formData.university === 'Другое' && (
+                        <S.CustomUniversityInput
+                            type="text"
+                            placeholder="Введите название вашего ВУЗа"
+                            value={formData.customUniversity ? formData.customUniversity : ''}
+                            onChange={(e) => setFormData({...formData, customUniversity: e.target.value})}
+                            required
+                        />
+                    )}
+                </S.FormGroup>
+
+                <S.FormGroup mobileOrder={8} desktopOrder={8}>
+                    <S.Label htmlFor="course">Курс*</S.Label>
+                    <S.SelectField
                         id="course"
                         name="course"
                         value={formData.course}
@@ -131,11 +235,11 @@ export const ApplicationForm: React.FC<ApplicationForm> = ({setFormData, formDat
                         {yearOptions[formData.degree as keyof typeof yearOptions]?.map((course) => (
                             <option key={course} value={course}>{course}</option>
                         ))}
-                    </SelectField>
-                </FormGroup>
-                <FormGroup mobileOrder={7} desktopOrder={7}>
-                    <Label htmlFor="degree">Степень обучения*</Label>
-                    <SelectField
+                    </S.SelectField>
+                </S.FormGroup>
+                <S.FormGroup mobileOrder={7} desktopOrder={7}>
+                    <S.Label htmlFor="degree">Степень обучения*</S.Label>
+                    <S.SelectField
                         id="degree"
                         name="degree"
                         value={formData.degree}
@@ -145,14 +249,13 @@ export const ApplicationForm: React.FC<ApplicationForm> = ({setFormData, formDat
                         <option value="">Выберите степень</option>
                         <option value="бакалавриат">Бакалавриат</option>
                         <option value="магистратура">Магистратура</option>
-                    </SelectField>
-                </FormGroup>
+                        <option value="аспирантура">Аспирантура</option>
+                    </S.SelectField>
+                </S.FormGroup>
 
-
-
-                <FormGroup mobileOrder={9} desktopOrder={9}>
-                    <Label htmlFor="specialty">Специальность*</Label>
-                    <InputField
+                <S.FormGroup mobileOrder={9} desktopOrder={9}>
+                    <S.Label htmlFor="specialty">Специальность*</S.Label>
+                    <S.InputField
                         type="text"
                         id="specialty"
                         name="specialty"
@@ -160,27 +263,26 @@ export const ApplicationForm: React.FC<ApplicationForm> = ({setFormData, formDat
                         onChange={handleChange}
                         required
                     />
-                </FormGroup>
+                </S.FormGroup>
 
-                {/* Дополнительные данные */}
-                <FormGroup mobileOrder={10} desktopOrder={10}>
-                    <Label htmlFor="resume">Резюме</Label>
-                    <FileInputContainer>
-                        <FileInput
+                <S.FormGroup mobileOrder={10} desktopOrder={10}>
+                    <S.Label htmlFor="resume">Резюме</S.Label>
+                    <S.FileInputContainer>
+                        <S.FileInput
                             type="file"
                             id="resume"
                             name="resume"
                             onChange={handleFileChange}
                             accept=".pdf,.doc,.docx"
                         />
-                        <FileInputLabel htmlFor="resume">
+                        <S.FileInputLabel htmlFor="resume">
                             {formData.resume ? formData.resume.name : 'Прикрепить файл'}
-                        </FileInputLabel>
-                    </FileInputContainer>
-                </FormGroup>
+                        </S.FileInputLabel>
+                    </S.FileInputContainer>
+                </S.FormGroup>
 
-                <ConsentGroup mobileOrder={11} desktopOrder={11}>
-                    <CheckboxInput
+                <S.ConsentGroup mobileOrder={11} desktopOrder={11}>
+                    <S.CheckboxInput
                         type="checkbox"
                         id="consent"
                         name="consent"
@@ -188,275 +290,28 @@ export const ApplicationForm: React.FC<ApplicationForm> = ({setFormData, formDat
                         onChange={handleCheckboxChange}
                         required
                     />
-                    <ConsentLabel htmlFor="consent">
-                        Я согласен(на) на обработку персональных данных*
-                    </ConsentLabel>
+                    <S.ConsentLabel htmlFor="consent">
+                        Соглашаюсь на обработку персональных данных на {' '}
+                        <S.DownloadLinkPolicy
+                            href={data_processing}
+                            download="Согласие_на_обработку_персональных_данных.pdf"
+                            onClick={(e) => e.stopPropagation()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            условиях политики
+                        </S.DownloadLinkPolicy>{' '}*
+                    </S.ConsentLabel>
 
-                </ConsentGroup>
-                <ConsentGroup mobileOrder={12} desktopOrder={12}>
+                </S.ConsentGroup>
+                <S.ConsentGroup mobileOrder={12} desktopOrder={12}>
                     <FormFooter
                         formData={formData}
                         setFormData={setFormData}
                     />
-                </ConsentGroup>
-
-            </FormContainer>
-
+                </S.ConsentGroup>
+            </S.FormContainer>
         </>
-
-
-
-
     );
 };
 
-const FormContainer = styled.form`
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-
-    @media (max-width: 768px) {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-
- 
-
- 
-`;
-
-type OrderProps =  {
-    mobileOrder: number;
-    desktopOrder: number;
-}
-
-const Label = styled.label`
-    display: block;
-    margin-bottom: 8px;
-    font-size: ${theme.fontsize_text.mobile};
-    color: #4a5568;
-    font-weight: 500;
-    
-    @media ${theme.media.mobile}{
-        font-size: ${theme.fontsize_text.tablet};
-    }
-`;
-
-const FileInputContainer = styled.div`
-    position: relative;
-    margin-top: 4px;
-`;
-
-const FileInput = styled.input`
-    position: absolute;
-    opacity: 0;
-    width: 0.1px;
-    height: 0.1px;
-`;
-
-// const LeftColumn = styled.div`
-//     flex: 1;
-//
-//     @media ${theme.media.mobile} {
-//         margin-bottom: 0;
-//     }
-// `;
-//
-// const RightColumn = styled.div`
-//     flex: 1;
-// `;
-//
-// const TwoColumnForm = styled.form`
-//     display: grid;
-//     grid-template-columns: 1fr 1fr;
-//     gap: 24px;
-//
-//     @media (max-width: 768px) {
-//         grid-template-columns: 1fr;
-//         gap: 16px;
-//     }
-//
-//     @media ${theme.media.mobile} {
-//         gap: 12px;
-//     }
-// `;
-
-const FormGroup = styled.div<OrderProps>`
-    position: relative;
-    order: ${props => props.desktopOrder};
-
-    @media (max-width: 768px) {
-        order: ${props => props.mobileOrder};
-    }
-    
-`;
-
-const ConsentGroup = styled.div<OrderProps>`
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-
-  
-    grid-column: 1 / -1;
-    order: ${props => props.desktopOrder};
-
-    @media (max-width: 768px) {
- 
-        align-items: flex-start;
-        order: ${props => props.mobileOrder};
-    }
-
-
-
-`;
-
-
-const InputField = styled.input`
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    background-color: #f8fafc;
-
-    &:focus {
-        border-color: #07CEB8;
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(7, 206, 184, 0.2);
-        background-color: #fff;
-    }
-
-    &::placeholder {
-        color: #cbd5e0;
-    }
-
-    @media ${theme.media.mobile} {
-        padding: 10px 14px;
-        font-size: ${theme.fontsize_text.tablet};
-    }
-`;
-
-const SelectField = styled.select`
-    width: 100%;
-    padding: 12px 16px;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    background-color: #f8fafc;
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 16px;
-
-    &:focus {
-        border-color: #07CEB8;
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(7, 206, 184, 0.2);
-        background-color: #fff;
-    }
-
-    &:disabled {
-        background-color: #edf2f7;
-        color: #a0aec0;
-    }
-
-    @media ${theme.media.mobile} {
-        padding: 10px 14px;
-        font-size: ${theme.fontsize_text.tablet};
-
-    }
-`;
-
-const FileInputLabel = styled.label`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px 16px;
-    background-color: #f8fafc;
-    border: 1px dashed #cbd5e0;
-    border-radius: 8px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: #4a5568;
-    min-height: 44px; 
-
-    &:hover {
-        background-color: #edf2f7;
-        border-color: #a0aec0;
-    }
-
-    svg {
-        margin-right: 8px;
-        color: #07CEB8;
-    }
-
-    @media ${theme.media.mobile} {
-        padding: 10px 14px;
-        font-size: 13px;
-    }
-`;
-
-// const ConsentGroup = styled.div`
-//     display: flex;
-//     align-items: center;
-//     margin-top: 24px;
-//     padding-top: 24px;
-//     border-top: 1px solid #edf2f7;
-//     grid-column: 1 / -1;
-//
-//     @media ${theme.media.mobile} {
-//         margin-top: 16px;
-//         padding-top: 16px;
-//         align-items: flex-start;
-//     }
-// `;
-
-const CheckboxInput = styled.input`
-    width: 18px;
-    height: 18px;
-    margin-right: 12px;
-    border: 1px solid #e2e8f0;
-    border-radius: 4px;
-    appearance: none;
-    background-color: #f8fafc;
-    transition: all 0.2s;
-    cursor: pointer;
-    flex-shrink: 0;
-    margin-top: 2px; 
-
-    &:checked {
-        background-color: #07CEB8;
-        border-color: #07CEB8;
-        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='20 6 9 17 4 12'%3e%3c/polyline%3e%3c/svg%3e");
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 12px;
-    }
-
-    &:focus {
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(7, 206, 184, 0.2);
-    }
-
-    @media ${theme.media.mobile} {
-        width: 20px;
-        height: 20px;
-    }
-`;
-
-const ConsentLabel = styled.label`
-    font-size: 14px;
-    color: #4a5568;
-    line-height: 1.5;
-    cursor: pointer;
-    margin-right: 16px;
-  
-
-    @media ${theme.media.mobile} {
-        font-size: 13px;
-    }
-`;
